@@ -32,7 +32,8 @@
 						<input id = "attacker_rarity" type="number" class="rarityinput smallnuminput" value=5 min=1 max=5 />
 						<span class = "attacker_bar_label">Merge + </span>
 						<input id = "attacker_merge" class="smallnuminput" type="number" value=0 min=0 max=10 />
-						<div class="button reset_button" id="reset_attacker">Reset</div>
+						<span class="button reset_button" id="reset_attacker">Reset</span>
+						<button type="button">Reset</button>
 				</div>
 			</div>
 
@@ -77,25 +78,25 @@
 
 					<div class = "skill_row"> 
 						<img class = "skill_picture" id = "attacker_a_picture" src = "skills/noskill.png"/> 
-						<div class = "skill_letter red"> A </div>
+						<span class = "skill_letter red"> Passive A </span>
 						<select class = "skill_select" id = "attacker_a"> </select>
 					</div>
 
 					<div class = "skill_row"> 
 						<img class = "skill_picture" id = "attacker_b_picture" src = "skills/noskill.png"/> 
-						<div class = "skill_letter blue"> B </div>
+						<span class = "skill_letter blue"> Passive B </span>
 						<select class = "skill_select" id = "attacker_b"> </select>
 					</div>
 
 					<div class = "skill_row"> 
 						<img class = "skill_picture" id = "attacker_c_picture" src = "skills/noskill.png"/> 
-						<div class = "skill_letter green"> C </div>
+						<span class = "skill_letter green"> Passive C </span>
 						<select class = "skill_select" id = "attacker_c"> </select>
 					</div>
 
 					<div class = "skill_row"> 
 						<img class = "skill_picture" id = "attacker_s_picture" src = "skills/noskill.png"/> 
-						<div class = "skill_letter yellow"> S </div>
+						<span class = "skill_letter yellow"> Sacred Seal </span>
 						<select class = "skill_select" id = "attacker_s"> </select>
 					</div>
 				</div>
@@ -107,17 +108,21 @@
 
 		<div id = "defender">
 			<div id = "defender_bar_top">
-				<div class="bar_top_title">Enemies
-					<div class="bar_top_title_right"> </div>
-					<div class="button button_importexport" id="export_enemies"> Export </div>
+
+				<div class="bar_top_title"> 
+					Defender
 				</div>
+
 			<div id = "defender_full_list" class="main_hero_frame">
+
 				<div id = main_hero_frame>
+
 					<div class="bar_top_options">
 						<span class="bar_label">Rarity:</span>
 						<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
 						<span class = "bar_label">Merge + </span>
 						<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
+					</div>
 					<div class="bar_top_options_right">
 							<div class="frame_stats">
 							<div class = "stat_row"> 
@@ -151,19 +156,23 @@
 							</div>
 							<div class = "skill_row">
 								<img class = "skill_picture" id = "defenders_a_picture" src="skills/noskill.png"/>
-								<div class="skill_letter red"> A </div>
+								<span class="skill_letter red"> Passive A </span>
+								<select class = "skill_select" id = "defender_a"> </select>
 							</div>
 							<div class = "skill_row">
 								<img class = "skill_picture" id = "defenders_b_picture" src = "skills/noskill.png"/>
-								<div class = "skill_letter blue"> B </div>
+								<span class = "skill_letter blue"> Passive B </span>
+								<select class = "skill_select" id = "defender_b"> </select>
 							</div>
 							<div class = "skill_row">
 								<img class = "skill_picture" id = "defenders_c_picture" src="skills/noskill.png"/>
-								<div class = "skill_letter green"> C </div>
+								<span class = "skill_letter green"> Passive C </span>
+								<select class = "skill_select" id = "defender_c"> </select>
 							</div>
 							<div class = "skill_row">
 								<img class = "skill_picture" id = "enemies_s_picture" src = "skills/noskill.png"/>
-								<div class="skill_letter yellow"> S </div>
+								<span class="skill_letter yellow"> Sacred Seal </span>
+								<select class = "skill_select" id = "defender_s"> </select>
 							</div>
 						</div>
 			</div>
@@ -171,7 +180,10 @@
 
 		<div id = "frame_results">
 			<div id = "results_top_bar">
-				<div class = "button" id = "calculate_button" onclick = "calculate();"> Calculate! </div>
+				<div class = "button" id = "calculate_button" onclick = "calculate();">
+					<button type="button">Calculate!</button>
+				</div>
+				
 			</div>
 			<div id="winpercentages">
 				<span class = "results"> Wins: <span id="win_pct">-</span></span>

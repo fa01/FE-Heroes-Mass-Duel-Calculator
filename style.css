@@ -23,7 +23,9 @@ body{
 }
 
 .stat_row{
-	position: static;
 	padding: 10px 10px 10px 10px;
 	display: inline;
+}
+
+#defender{
 }
