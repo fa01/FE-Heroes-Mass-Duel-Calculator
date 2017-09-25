@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <!--
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title> Fire Emblem Heroes Duel Calculator</title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1348.17">
+  <style type="text/css">
+  	-->
+  <link rel = "stylesheet" type = "text/css" href = "style.css"/>
+  <link href='https://fonts.googleapis.com/css?family=Advent Pro' rel='stylesheet'>
+  </style>
+</head>
+<body>
+	<h1>Fire Emblem Duel Calculator</h1>
+	<div id = "main_frame">
+
+		<div id = "attacker">
+			<div id = "attacker_bar_top">
+				<div class = "attacker_top_title"> 
+					Attacker
+					<select id = "attacker_name"></select>
+				</div>
+			</div>
+
+			<div id = "main_hero_frame">
+				<div id = attacker_bar_options>
+					<div class = "attacker_top_right_opetions">
+						<span class = "attacker_bar_label"> Rarity </span>
+						<input id = "attacker_rarity" type="number" class="rarityinput smallnuminput" value=5 min=1 max=5 />
+						<span class = "attacker_bar_label">Merge + </span>
+						<input id = "attacker_merge" class="smallnuminput" type="number" value=0 min=0 max=10 />
+						<div class="button reset_button" id="reset_attacker">Reset</div>
+				</div>
+			</div>
+
+			<div id = "frame_hero_main_top">
+				<div class = "attacker_hero_picture">
+					<img id = "attacker_picture" class = "hero_icon" src = "heroes/nohero.png" />
+					<img id = "weapon_picture" class = "weapon_icon" src="weapons/noweapon.png"/>
+					<img id = "attacker_movement" class="movement_icon" src="weapons/noweapon.png"/>
+				</div>
+			</div>
+
+			<div class = "attacker_stats_name">
+				<span class = "stat_row"> HP:  </span>
+				<span class = "stat_row"> Atk: </span>
+				<span class = "stat_row"> Spd: </span>
+				<span class = "stat_row"> Def: </span>
+				<span class = "stat_row"> Res: </span>
+			</div>
+
+			<div class = "attacker_stats_num">
+				<span class = "stat_number" id = "attacker_hp"></span>
+				<span class = "stat_number" id = "attacker_atk"></span>
+				<span class = "stat_number" id = "attacker_spd"></span>
+				<span class = "stat_number" id = "attacker_def"></span>
+				<span class = "stat_number" id = "attacker_res"></span>
+			</div>
+
+			<div class = "attacker_main_frame_bottom">
+
+				<div class = "hero_skills">
+					<div class = "skill_row"> 
+						Weapon
+						<img class = "skill_picture" id = "attacker_weapon_picture" src = "skills/weapon.png" /> 
+						<select class = "skill_select" id = "attacker_weapon"> </select> 
+					</div>
+
+					<div class = "skill_row"> 
+						Special
+						<img class = "skill_picture" id = "attacker_special_picture" src = "skills/special.png" />
+						<select class = "skill_select" id = "attacker_special"> </select>
+					</div>
+
+					<div class = "skill_row"> 
+						<img class = "skill_picture" id = "attacker_a_picture" src = "skills/noskill.png"/> 
+						<div class = "skill_letter red"> A </div>
+						<select class = "skill_select" id = "attacker_a"> </select>
+					</div>
+
+					<div class = "skill_row"> 
+						<img class = "skill_picture" id = "attacker_b_picture" src = "skills/noskill.png"/> 
+						<div class = "skill_letter blue"> B </div>
+						<select class = "skill_select" id = "attacker_b"> </select>
+					</div>
+
+					<div class = "skill_row"> 
+						<img class = "skill_picture" id = "attacker_c_picture" src = "skills/noskill.png"/> 
+						<div class = "skill_letter green"> C </div>
+						<select class = "skill_select" id = "attacker_c"> </select>
+					</div>
+
+					<div class = "skill_row"> 
+						<img class = "skill_picture" id = "attacker_s_picture" src = "skills/noskill.png"/> 
+						<div class = "skill_letter yellow"> S </div>
+						<select class = "skill_select" id = "attacker_s"> </select>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		</div>
+
+		<div id = "defender">
+			<div id = "defender_bar_top">
+				<div class="bar_top_title">Enemies
+					<div class="bar_top_title_right"> </div>
+					<div class="button button_importexport" id="export_enemies"> Export </div>
+				</div>
+			<div id = "defender_full_list" class="main_hero_frame">
+				<div id = main_hero_frame>
+					<div class="bar_top_options">
+						<span class="bar_label">Rarity:</span>
+						<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
+						<span class = "bar_label">Merge + </span>
+						<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
+					<div class="bar_top_options_right">
+							<div class="frame_stats">
+							<div class = "stat_row"> 
+								HP: <span class="stat_number" id = "defenders_hp"> </span> 
+							</div>
+							<div class = "stat_row"> 
+								Atk: <span class="stat_number" id="defenders_atk"> </span>
+							</div>
+							<div class = "stat_row">
+								Spd: <span class="stat_number" id="defenders_spd"> </span>
+							</div>
+							<div class = "stat_row"> 
+								Def: <span class="stat_number" id="defenders_def"> </span>
+							</div>
+							<div class="stat_row">
+								Res: 
+								<span class = "stat_number" id = "defenders_res"> </span>
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="frame_hero_main_bottom">
+						<div class="hero_skills">
+							<div class = "skill_row">
+								<img class = "skill_picture" id="defenders_weapon_picture" src="skills/weapon.png"/>
+							</div>
+							<div class = "skill_row">
+								<img class="skill_picture" id = "defenders_special_picture" src="skills/special.png"/>
+							</div>
+							<div class = "skill_row">
+								<img class = "skill_picture" id = "defenders_a_picture" src="skills/noskill.png"/>
+								<div class="skill_letter red"> A </div>
+							</div>
+							<div class = "skill_row">
+								<img class = "skill_picture" id = "defenders_b_picture" src = "skills/noskill.png"/>
+								<div class = "skill_letter blue"> B </div>
+							</div>
+							<div class = "skill_row">
+								<img class = "skill_picture" id = "defenders_c_picture" src="skills/noskill.png"/>
+								<div class = "skill_letter green"> C </div>
+							</div>
+							<div class = "skill_row">
+								<img class = "skill_picture" id = "enemies_s_picture" src = "skills/noskill.png"/>
+								<div class="skill_letter yellow"> S </div>
+							</div>
+						</div>
+			</div>
+		</div>
+
+		<div id = "frame_results">
+			<div id = "results_top_bar">
+				<div class = "button" id = "calculate_button" onclick = "calculate();"> Calculate! </div>
+			</div>
+			<div id="winpercentages">
+				<span class = "results"> Wins: <span id="win_pct">-</span></span>
+				<span class = "results"> Losses: <span id="lose_pct">-</span></span>
+				<span class = "results"> Inconclusive: <span id="inconclusive_pct">-</span></span>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

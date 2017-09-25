@@ -1,0 +1,29 @@
+body{
+	background-color: black;
+	font-family: 'Advent Pro';
+	color:#ffffff;
+	min-width:920px;
+	font-size: 18px;
+}
+
+#main_frame{
+	width:910px;
+	margin: 0 auto;
+}
+
+.attacker_stats_name{
+	position:static;
+	right:0;
+	top:0;
+	padding: 18px 10px 10px 10px;
+	width:220px;
+	height:132px;
+	line-height:23px;
+	display: inline;
+}
+
+.stat_row{
+	position: static;
+	padding: 10px 10px 10px 10px;
+	display: inline;
+}
