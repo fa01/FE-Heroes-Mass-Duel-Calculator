@@ -1,92 +1,72 @@
-
-
-
-/*
-//sort heroes by name
-data.heroes.sort(function(a,b){
-	//console.log(a.name + ", " + b.name + ": " + a.name>b.name);
-	return (a.name.toLowerCase() > b.name.toLowerCase())*2-1;
-})
-
-//Sort skills array by name
-data.skills.sort(function(a,b){
-	//console.log(a.name + ", " + b.name + ": " + a.name>b.name);
-	return (a.name.toLowerCase() + a.slot > b.name.toLowerCase() + b.slot)*2-1;
-})
-*/
-function initOptions(){
-	//Initializes options from localStorage or from scratch
-
-	//Holder for options that aren't hero-specific
-	options = {};
-	options.showOnlyMaxSkills = true;
-	options.hideUnaffectingSkills = true;
-	options.sortOrder = 1;
-	options.roundInitiators = ["attacker initiates","Enemy initiates"];
-
-	//Holder for attacker options and pre-calculated stats
-	attacker = {};
-
-	attacker.attacker = true;
-	attacker.index = -1;
-	attacker.merge = 0;
-	attacker.rarity = 5;
-	attacker.boon = "none";
-	attacker.bane = "none";
-	attacker.summoner = "none";
-	attacker.ally = "none";
-
-	//The following 6 arrays will be set from arrays generated in the heroes array so they don't have to be re-calculated
-	attacker.naturalSkills = []; //Skills the hero has without having to inherit
-	attacker.validWeaponSkills = [];
-	attacker.validSpecialSkills = [];
-	attacker.validASkills = [];
-	attacker.validBSkills = [];
-	attacker.validCSkills = [];
-
-	attacker.weapon = -1;
-	attacker.special = -1;
-	attacker.a = -1;
-	attacker.b = -1;
-	attacker.c = -1;
-	attacker.s = -1;
-
-	attacker.hp = 0;
-	attacker.atk = 0;
-	attacker.spd = 0;
-	attacker.def = 0;
-	attacker.res = 0;
-
-	attacker.damage = 0;
-	attacker.precharge = 0;
-
-}
-
-initOptions();
-
-var fightResults = []; //Needs to be global variable to get info for tooltip
-var resultHTML = []; //Needs to be a global variable to flip sort order without
-
-var showingTooltip = false;
-var calcuwaiting = false;
-var calcuwaitTime = 0;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Put DOM stuff in place
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 //heroHTML = "<option value=-1 class=\"hero_option\">Select Hero</option>";
 for (i = 0; i < data.heroes.length; i++){
-	console.log(data.heroes[i].name);
-	console.log(i);
+	//console.log(data.heroes[i].name);
+	//console.log(i);
 	//heroHTML += "<option value=" + i + " class=\"hero_option\">" + data.heroes[i].name + "</option>";
 	var option = document.createElement("option");
 	option.text = data.heroes[i].name;
-	option.value = i+1;
+	option.value = data.heroes[i].hero_id;
 	var select = document.getElementById("attacker_name");
 	select.appendChild(option);
 }
+
+function initAttacker(){
+	var select = document.getElementById("attacker_name");
+    var attackerID = select.options[select.selectedIndex].value;
+    //var attackerText = select.options[select.selectedIndex].text;
+	//console.log(attackerID);
+	//console.log(attackerText);
+
+	var element = document.getElementById("attacker_hp");
+	element.innerHTML = data.heroes[attackerID-1].basehp;
+
+	element = document.getElementById("attacker_atk");
+	element.innerHTML = data.heroes[attackerID-1].baseatk;
+
+	element = document.getElementById("attacker_spd");
+	element.innerHTML = data.heroes[attackerID-1].basespd;
+
+	element = document.getElementById("attacker_def");
+	element.innerHTML = data.heroes[attackerID-1].basedef;
+
+	element = document.getElementById("attacker_res");
+	element.innerHTML = data.heroes[attackerID-1].baseres;
+}
+
+initAttacker();
+
+for (i = 0; i < data.heroes.length; i++){
+	//console.log(data.heroes[i].name);
+	//console.log(i);
+	var option2 = document.createElement("option");
+	option2.text = data.heroes[i].name;
+	option2.value = data.heroes[i].hero_id;
+	var select2 = document.getElementById("defender_name");
+	select2.appendChild(option);
+}
+
+function initDefender(){
+	var select = document.getElementById("defender_name");
+    var defenderID = select.options[select.selectedIndex].value;
+    var defenderText = select.options[select.selectedIndex].text;
+	console.log(defenderID);
+	console.log(defenderText);
+
+	var element2 = document.getElementById("defender_hp");
+	element2.innerHTML = data.heroes[defenderID-1].basehp;
+
+	element2 = document.getElementById("defender_atk");
+	element2.innerHTML = data.heroes[defenderID-1].baseatk;
+
+	element2 = document.getElementById("defender_spd");
+	element2.innerHTML = data.heroes[defenderID-1].basespd;
+
+	element2 = document.getElementById("defender_def");
+	element2.innerHTML = data.heroes[defenderID-1].basedef;
+
+	element2 = document.getElementById("defender_res");
+	element2.innerHTML = data.heroes[defenderID-1].baseres;
+}
+
+initDefender();
+

@@ -22,13 +22,13 @@
 			<div id = "attacker_bar_top">
 				<div class = "attacker_top_title"> 
 					Attacker
-					<select id = "attacker_name"></select>
+					<select id = "attacker_name" onclick = "initAttacker()";></select>
 				</div>
 			</div>
 
 			<div id = "main_hero_frame">
 				<div id = attacker_bar_options>
-					<div class = "attacker_top_right_opetions">
+					<div class = "attacker_top_right_options">
 						<span class = "attacker_bar_label"> Rarity </span>
 						<input id = "attacker_rarity" type="number" class="rarityinput smallnuminput" value=5 min=1 max=5 />
 						<span class = "attacker_bar_label">Merge + </span>
@@ -112,6 +112,7 @@
 
 				<div class="bar_top_title"> 
 					Defender
+					<select id = "defender_name" onclick = "initDefender()"></select>
 				</div>
 
 			<div id = "defender_full_list" class="main_hero_frame">
@@ -124,24 +125,25 @@
 						<span class = "bar_label">Merge + </span>
 						<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
 					</div>
+
+
 					<div class="bar_top_options_right">
 							<div class="frame_stats">
-							<div class = "stat_row"> 
-								HP: <span class="stat_number" id = "defenders_hp"> </span> 
-							</div>
-							<div class = "stat_row"> 
-								Atk: <span class="stat_number" id="defenders_atk"> </span>
-							</div>
-							<div class = "stat_row">
-								Spd: <span class="stat_number" id="defenders_spd"> </span>
-							</div>
-							<div class = "stat_row"> 
-								Def: <span class="stat_number" id="defenders_def"> </span>
-							</div>
-							<div class="stat_row">
-								Res: 
-								<span class = "stat_number" id = "defenders_res"> </span>
-							</div>
+								<div class = "defender_stats_name">
+									<span class = "stat_row"> HP:  </span>
+									<span class = "stat_row"> Atk: </span>
+									<span class = "stat_row"> Spd: </span>
+									<span class = "stat_row"> Def: </span>
+									<span class = "stat_row"> Res: </span>
+								</div>
+
+								<div class = "defender_stats_num">
+									<span class = "stat_number" id = "defender_hp"></span>
+									<span class = "stat_number" id = "defender_atk"></span>
+									<span class = "stat_number" id = "defender_spd"></span>
+									<span class = "stat_number" id = "defender_def"></span>
+									<span class = "stat_number" id = "defender_res"></span>
+								</div>
 						</div>
 					</div>
 					</div>
