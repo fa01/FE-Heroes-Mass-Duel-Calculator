@@ -8,6 +8,7 @@ for (i = 0; i < data.heroes.length; i++){
 	option.value = data.heroes[i].hero_id;
 	var select = document.getElementById("attacker_name");
 	select.appendChild(option);
+	//console.log(select);
 }
 
 function initAttacker(){
@@ -38,22 +39,24 @@ initAttacker();
 for (i = 0; i < data.heroes.length; i++){
 	//console.log(data.heroes[i].name);
 	//console.log(i);
-	var option2 = document.createElement("option");
-	option2.text = data.heroes[i].name;
-	option2.value = data.heroes[i].hero_id;
-	var select2 = document.getElementById("defender_name");
-	select2.appendChild(option);
+	var newDefender = document.createElement("option");
+	newDefender.text = data.heroes[i].name;
+	newDefender.value = data.heroes[i].hero_id;
+	var addDefender = document.getElementById("defender_name");
+	addDefender.appendChild(newDefender);
+	//console.log(select2);
 }
 
 function initDefender(){
-	var select = document.getElementById("defender_name");
-    var defenderID = select.options[select.selectedIndex].value;
-    var defenderText = select.options[select.selectedIndex].text;
+	var getDefender = document.getElementById("defender_name");
+    var defenderID = getDefender.options[getDefender.selectedIndex].value;
+    var defenderText = getDefender.options[getDefender.selectedIndex].text;
 	console.log(defenderID);
 	console.log(defenderText);
+	//console.log(data.heroes[defenderID-3]);
 
-	var element2 = document.getElementById("defender_hp");
-	element2.innerHTML = data.heroes[defenderID-1].basehp;
+	var defenderStat = document.getElementById("defender_hp");
+	defenderStat.innerHTML = data.heroes[defenderID-1].basehp;
 
 	element2 = document.getElementById("defender_atk");
 	element2.innerHTML = data.heroes[defenderID-1].baseatk;
@@ -66,6 +69,7 @@ function initDefender(){
 
 	element2 = document.getElementById("defender_res");
 	element2.innerHTML = data.heroes[defenderID-1].baseres;
+	
 }
 
 initDefender();
