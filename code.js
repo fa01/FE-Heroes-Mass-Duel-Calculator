@@ -34,6 +34,7 @@ function initAttacker(){
 	element.innerHTML = data.heroes[attackerID-1].baseres;
 
 	getAttackerIcon(attackerID);
+	getHeroWeapon(attackerID);
 }
 
 initAttacker();
@@ -71,11 +72,8 @@ function initDefender(){
 
 	element2 = document.getElementById("defender_res");
 	element2.innerHTML = data.heroes[defenderID-1].baseres;
-<<<<<<< HEAD
 
 	getDefenderIcon(defenderID);
-=======
->>>>>>> origin/master
 	
 }
 
@@ -91,6 +89,31 @@ function getDefenderIcon(id_num){
 	console.log(id_num);
 	var getDefenderPicture = document.getElementById("defender_picture");
 	getDefenderPicture.src = "heroes/" + data.heroes[id_num-1].name + ".png";
+}
+
+function getHeroWeapon(id_num){
+	var possibleAttributes = new Object();
+	var thing = new Array();
+	for (i = 0; i < data.heroSkills.length; i++){
+		if (data.heroSkills[i].hero_id == id_num){
+			thing[i] = data.heroSkills[i].skill_id;
+		}
+	}
+
+	var weaponSelect = document.getElementById("attacker_weapon");
+
+	for (i = 0; i < data.skills.length; i++){
+		for (j = 0; j < thing.length; j++){
+			if (data.skills[i].skill_id == thing[j]){
+				var weaponOption = document.createElement("option");
+				weaponOption.text = data.skills[i].name;
+				weaponOption.value = thing[j];
+				weaponSelect.appendChild(weaponOption);
+				console.log(weaponOption);
+			}
+		}
+	}
+
 }
 
 
