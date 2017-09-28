@@ -71,8 +71,11 @@ function initDefender(){
 
 	element2 = document.getElementById("defender_res");
 	element2.innerHTML = data.heroes[defenderID-1].baseres;
+<<<<<<< HEAD
 
 	getDefenderIcon(defenderID);
+=======
+>>>>>>> origin/master
 	
 }
 
