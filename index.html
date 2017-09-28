@@ -19,32 +19,28 @@
 	<div id = "main_frame">
 
 		<div id = "attacker">
-			<div id = "attacker_bar_top">
-				<div class = "attacker_top_title"> 
-					Attacker
-					<select id = "attacker_name" onclick = "initAttacker()";></select>
+
+			<div class = "attacker_top"> 
+				Attacker
+				<select id = "attacker_name" onchange = "initAttacker()";></select>
+
+				<div class = "attacker_options">
+					<span class = "attacker_bar_label"> Rarity </span>
+					<input id = "attacker_rarity" type="number" class="rarityinput smallnuminput" value=5 min=1 max=5 />
+					<span class = "attacker_bar_label">Merge + </span>
+					<input id = "attacker_merge" class="smallnuminput" type="number" value=0 min=0 max=10 />
+					<span class="button reset_button" id="reset_attacker">Reset</span>
+					<button type="button">Reset</button>
 				</div>
 			</div>
 
-			<div id = "main_hero_frame">
-				<div id = attacker_bar_options>
-					<div class = "attacker_top_right_options">
-						<span class = "attacker_bar_label"> Rarity </span>
-						<input id = "attacker_rarity" type="number" class="rarityinput smallnuminput" value=5 min=1 max=5 />
-						<span class = "attacker_bar_label">Merge + </span>
-						<input id = "attacker_merge" class="smallnuminput" type="number" value=0 min=0 max=10 />
-						<span class="button reset_button" id="reset_attacker">Reset</span>
-						<button type="button">Reset</button>
-				</div>
+
+			<div class = "attacker_icons">
+				<img id = "attacker_picture" class = "hero_icon" src = "heroes/nohero.png" />
+				<img id = "weapon_picture" class = "weapon_icon" src="weapons/noweapon.png"/>
+				<img id = "attacker_movement" class="movement_icon" src="weapons/noweapon.png"/>
 			</div>
 
-			<div id = "frame_hero_main_top">
-				<div class = "attacker_hero_picture">
-					<img id = "attacker_picture" class = "hero_icon" src = "heroes/nohero.png" />
-					<img id = "weapon_picture" class = "weapon_icon" src="weapons/noweapon.png"/>
-					<img id = "attacker_movement" class="movement_icon" src="weapons/noweapon.png"/>
-				</div>
-			</div>
 
 			<div class = "attacker_stats_name">
 				<span class = "stat_row"> HP:  </span>
@@ -62,124 +58,109 @@
 				<span class = "stat_number" id = "attacker_res"></span>
 			</div>
 
-			<div class = "attacker_main_frame_bottom">
-
-				<div class = "hero_skills">
-					<div class = "skill_row"> 
-						Weapon
-						<img class = "skill_picture" id = "attacker_weapon_picture" src = "skills/weapon.png" /> 
-						<select class = "skill_select" id = "attacker_weapon"> </select> 
-					</div>
-
-					<div class = "skill_row"> 
-						Special
-						<img class = "skill_picture" id = "attacker_special_picture" src = "skills/special.png" />
-						<select class = "skill_select" id = "attacker_special"> </select>
-					</div>
-
-					<div class = "skill_row"> 
-						<img class = "skill_picture" id = "attacker_a_picture" src = "skills/noskill.png"/> 
-						<span class = "skill_letter red"> Passive A </span>
-						<select class = "skill_select" id = "attacker_a"> </select>
-					</div>
-
-					<div class = "skill_row"> 
-						<img class = "skill_picture" id = "attacker_b_picture" src = "skills/noskill.png"/> 
-						<span class = "skill_letter blue"> Passive B </span>
-						<select class = "skill_select" id = "attacker_b"> </select>
-					</div>
-
-					<div class = "skill_row"> 
-						<img class = "skill_picture" id = "attacker_c_picture" src = "skills/noskill.png"/> 
-						<span class = "skill_letter green"> Passive C </span>
-						<select class = "skill_select" id = "attacker_c"> </select>
-					</div>
-
-					<div class = "skill_row"> 
-						<img class = "skill_picture" id = "attacker_s_picture" src = "skills/noskill.png"/> 
-						<span class = "skill_letter yellow"> Sacred Seal </span>
-						<select class = "skill_select" id = "attacker_s"> </select>
-					</div>
+			<div class = "hero_skills">
+				<div class = "skill_row"> 
+					Weapon
+					<img class = "skill_picture" id = "attacker_weapon_picture" src = "skills/weapon.png" /> 
+					<select class = "skill_select" id = "attacker_weapon"> </select> 
 				</div>
 
+				<div class = "skill_row"> 
+					Special
+					<img class = "skill_picture" id = "attacker_special_picture" src = "skills/special.png" />
+					<select class = "skill_select" id = "attacker_special"> </select>
+				</div>
 
+				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "attacker_a_picture" src = "skills/noskill.png"/> 
+					<span class = "skill_letter red"> Passive A </span>
+					<select class = "skill_select" id = "attacker_a"> </select>
+				</div>
+
+				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "attacker_b_picture" src = "skills/noskill.png"/> 
+					<span class = "skill_letter blue"> Passive B </span>
+					<select class = "skill_select" id = "attacker_b"> </select>
+				</div>
+
+				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "attacker_c_picture" src = "skills/noskill.png"/> 
+					<span class = "skill_letter green"> Passive C </span>
+					<select class = "skill_select" id = "attacker_c"> </select>
+				</div>
+
+				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "attacker_s_picture" src = "skills/noskill.png"/> 
+					<span class = "skill_letter yellow"> Sacred Seal </span>
+					<select class = "skill_select" id = "attacker_s"> </select>
+				</div>
 			</div>
-		</div>
 		</div>
 
 		<div id = "defender">
-			<div id = "defender_bar_top">
+			<div class="defender_top"> 
+				Defender
+				<select id = "defender_name" onchange = "initDefender()"></select>
 
-				<div class="bar_top_title"> 
-					Defender
-					<select id = "defender_name" onclick = "initDefender()"></select>
-				</div>
-
-			<div id = "defender_full_list" class="main_hero_frame">
-
-				<div id = main_hero_frame>
-
-					<div class="bar_top_options">
-						<span class="bar_label">Rarity:</span>
-						<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
-						<span class = "bar_label">Merge + </span>
-						<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
-					</div>
-
-
-					<div class="bar_top_options_right">
-							<div class="frame_stats">
-								<div class = "defender_stats_name">
-									<span class = "stat_row"> HP:  </span>
-									<span class = "stat_row"> Atk: </span>
-									<span class = "stat_row"> Spd: </span>
-									<span class = "stat_row"> Def: </span>
-									<span class = "stat_row"> Res: </span>
-								</div>
-
-								<div class = "defender_stats_num">
-									<span class = "stat_number" id = "defender_hp"></span>
-									<span class = "stat_number" id = "defender_atk"></span>
-									<span class = "stat_number" id = "defender_spd"></span>
-									<span class = "stat_number" id = "defender_def"></span>
-									<span class = "stat_number" id = "defender_res"></span>
-								</div>
-						</div>
-					</div>
-					</div>
+				<div class="defender_options">
+					<span class="bar_label">Rarity:</span>
+					<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
+					<span class = "bar_label">Merge + </span>
+					<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
 				</div>
 			</div>
-			<div class="frame_hero_main_bottom">
-						<div class="hero_skills">
-							<div class = "skill_row">
-								<img class = "skill_picture" id="defenders_weapon_picture" src="skills/weapon.png"/>
-							</div>
-							<div class = "skill_row">
-								<img class="skill_picture" id = "defenders_special_picture" src="skills/special.png"/>
-							</div>
-							<div class = "skill_row">
-								<img class = "skill_picture" id = "defenders_a_picture" src="skills/noskill.png"/>
-								<span class="skill_letter red"> Passive A </span>
-								<select class = "skill_select" id = "defender_a"> </select>
-							</div>
-							<div class = "skill_row">
-								<img class = "skill_picture" id = "defenders_b_picture" src = "skills/noskill.png"/>
-								<span class = "skill_letter blue"> Passive B </span>
-								<select class = "skill_select" id = "defender_b"> </select>
-							</div>
-							<div class = "skill_row">
-								<img class = "skill_picture" id = "defenders_c_picture" src="skills/noskill.png"/>
-								<span class = "skill_letter green"> Passive C </span>
-								<select class = "skill_select" id = "defender_c"> </select>
-							</div>
-							<div class = "skill_row">
-								<img class = "skill_picture" id = "enemies_s_picture" src = "skills/noskill.png"/>
-								<span class="skill_letter yellow"> Sacred Seal </span>
-								<select class = "skill_select" id = "defender_s"> </select>
-							</div>
-						</div>
+
+			<div class = "defender_icons">
+				<img id = "defender_picture" class = "hero_icon" src = "heroes/nohero.png" />
+				<img id = "weapon_picture" class = "weapon_icon" src="weapons/noweapon.png"/>
+				<img id = "attacker_movement" class="movement_icon" src="weapons/noweapon.png"/>
 			</div>
-		</div>
+
+			<div class = "defender_stats_name">
+				<span class = "stat_row"> HP:  </span>
+				<span class = "stat_row"> Atk: </span>
+				<span class = "stat_row"> Spd: </span>
+				<span class = "stat_row"> Def: </span>
+				<span class = "stat_row"> Res: </span>
+			</div>
+
+			<div class = "defender_stats_num">
+				<span class = "stat_number" id = "defender_hp"></span>
+				<span class = "stat_number" id = "defender_atk"></span>
+				<span class = "stat_number" id = "defender_spd"></span>
+				<span class = "stat_number" id = "defender_def"></span>
+				<span class = "stat_number" id = "defender_res"></span>
+			</div>
+
+
+			<div class="hero_skills">
+				<div class = "skill_row">
+					<img class = "skill_picture" id="defenders_weapon_picture" src="skills/weapon.png"/>
+				</div>
+				<div class = "skill_row">
+					<img class="skill_picture" id = "defenders_special_picture" src="skills/special.png"/>
+				</div>
+				<div class = "skill_row">
+					<img class = "skill_picture" id = "defenders_a_picture" src="skills/noskill.png"/>
+					<span class="skill_letter red"> Passive A </span>
+					<select class = "skill_select" id = "defender_a"> </select>
+				</div>
+				<div class = "skill_row">
+					<img class = "skill_picture" id = "defenders_b_picture" src = "skills/noskill.png"/>
+					<span class = "skill_letter blue"> Passive B </span>
+					<select class = "skill_select" id = "defender_b"> </select>
+				</div>
+				<div class = "skill_row">
+					<img class = "skill_picture" id = "defenders_c_picture" src="skills/noskill.png"/>
+					<span class = "skill_letter green"> Passive C </span>
+					<select class = "skill_select" id = "defender_c"> </select>
+				</div>
+				<div class = "skill_row">
+					<img class = "skill_picture" id = "enemies_s_picture" src = "skills/noskill.png"/>
+					<span class="skill_letter yellow"> Sacred Seal </span>
+					<select class = "skill_select" id = "defender_s"> </select>
+				</div>
+			</div>
 
 		<div id = "frame_results">
 			<div id = "results_top_bar">

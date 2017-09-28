@@ -6,9 +6,23 @@ body{
 	font-size: 18px;
 }
 
+h1{
+	position: center;
+}
+
 #main_frame{
 	width:910px;
 	margin: 0 auto;
+}
+
+#attacker{
+	float: left;
+	border: 3px solid #73AD21;
+}
+
+.attacker_top{
+	padding-bottom: 20px;
+	padding-right: -50px;
 }
 
 .attacker_stats_name{
@@ -20,7 +34,13 @@ body{
 	height:132px;
 	line-height:23px;
 	display: inline;
+	margin: auto;
 }
+
+.attacker_stas_num{
+	margin: auto;
+}
+
 
 .stat_row{
 	padding: 10px 10px 10px 10px;
@@ -29,4 +49,17 @@ body{
 
 #defender{
 	float: right;
+	margin: auto;
+	border: 3px solid #73AD21;
+}
+
+.defender_stats_num{
+	position:static;
+	right:0;
+	top:0;
+	padding: 18px 10px 10px 10px;
+	width:220px;
+	height:132px;
+	line-height:23px;
+	display: inline;
 }
