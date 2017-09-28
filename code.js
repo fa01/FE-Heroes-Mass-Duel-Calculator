@@ -34,7 +34,7 @@ function initAttacker(){
 	element.innerHTML = data.heroes[attackerID-1].baseres;
 
 	getAttackerIcon(attackerID);
-	getHeroWeapon(attackerID);
+	getHeroAssets(attackerID, 0);
 }
 
 initAttacker();
@@ -54,8 +54,8 @@ function initDefender(){
 	var getDefender = document.getElementById("defender_name");
     var defenderID = getDefender.options[getDefender.selectedIndex].value;
     var defenderText = getDefender.options[getDefender.selectedIndex].text;
-	console.log(defenderID);
-	console.log(defenderText);
+	//console.log(defenderID);
+	//console.log(defenderText);
 	//console.log(data.heroes[defenderID-3]);
 
 	var defenderStat = document.getElementById("defender_hp");
@@ -74,6 +74,7 @@ function initDefender(){
 	element2.innerHTML = data.heroes[defenderID-1].baseres;
 
 	getDefenderIcon(defenderID);
+	getHeroAssets(defenderID, 1);
 	
 }
 
@@ -86,12 +87,42 @@ function getAttackerIcon(id_num){
 }
 
 function getDefenderIcon(id_num){
-	console.log(id_num);
+	//console.log(id_num);
 	var getDefenderPicture = document.getElementById("defender_picture");
 	getDefenderPicture.src = "heroes/" + data.heroes[id_num-1].name + ".png";
 }
 
-function getHeroWeapon(id_num){
+
+function getHeroAssets(id_num, attackerOrDefender){
+	if (attackerOrDefender == 0){
+		var weaponSelect = document.getElementById("attacker_weapon");
+		var passiveAoption = document.getElementById("attacker_a");
+		var passiveBoption = document.getElementById("attacker_b");
+		var passiveCoption = document.getElementById("attacker_c");
+		var specialSelect = document.getElementById("attacker_special");
+		var assistOption = document.getElementById("attacker_assist");
+		var passiveAPicture = document.getElementById("attacker_a_picture");
+		var passiveBPicture = document.getElementById("attacker_b_picture");
+		var passiveCPicture = document.getElementById("attacker_c_picture");
+	}
+	else{
+		var weaponSelect = document.getElementById("defender_weapon");
+		var passiveAoption = document.getElementById("defender_a");
+		var passiveBoption = document.getElementById("defender_b");
+		var passiveCoption = document.getElementById("defender_c");
+		var specialSelect = document.getElementById("defender_special");
+		var assistOption = document.getElementById("defender_assist");
+		var passiveAPicture = document.getElementById("defender_a_picture");
+		var passiveBPicture = document.getElementById("defender_b_picture");
+		var passiveCPicture = document.getElementById("defender_c_picture");
+	}
+	removeOptions(weaponSelect);
+	removeOptions(passiveAoption);
+	removeOptions(passiveBoption);
+	removeOptions(passiveCoption);
+	removeOptions(specialSelect);
+	removeOptions(assistOption);
+
 	var possibleAttributes = new Object();
 	var thing = new Array();
 	for (i = 0; i < data.heroSkills.length; i++){
@@ -100,20 +131,99 @@ function getHeroWeapon(id_num){
 		}
 	}
 
-	var weaponSelect = document.getElementById("attacker_weapon");
-
 	for (i = 0; i < data.skills.length; i++){
 		for (j = 0; j < thing.length; j++){
 			if (data.skills[i].skill_id == thing[j]){
-				var weaponOption = document.createElement("option");
-				weaponOption.text = data.skills[i].name;
-				weaponOption.value = thing[j];
-				weaponSelect.appendChild(weaponOption);
-				console.log(weaponOption);
+				if (data.skills[i].slot == "weapon"){
+					var weaponOption = document.createElement("option");
+					weaponOption.text = data.skills[i].name;
+					weaponOption.value = thing[j];
+					weaponSelect.appendChild(weaponOption);
+					//console.log(weaponOption);
+				}
+				if (data.skills[i].slot == "a"){
+					var passiveA = document.createElement("option");
+					passiveA.text = data.skills[i].name;
+					console.log(passiveA.text);
+					passiveA.value = thing[i];
+					passiveAoption.appendChild(passiveA);
+					var skillName = data.skills[i].name;
+					var skillNamePath = skillName.split(" ").join("_");
+					//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+					updatePictures(id_num, attackerOrDefender, skillNamePath);
+				}
+
+				if (data.skills[i].slot == "b"){
+					var passiveB = document.createElement("option");
+					passiveB.text = data.skills[i].name;
+					passiveB.value = thing[i];
+					passiveBoption.appendChild(passiveB);
+					var skillName = data.skills[i].name;
+					var skillNamePath = skillName.split(" ").join("_");
+					//passiveBPicture.src = "skills/" + skillNamePath + ".png";
+					updatePictures(id_num, attackerOrDefender, skillNamePath);
+				}
+
+				if (data.skills[i].slot == "c"){
+					var passiveC = document.createElement("option");
+					passiveC.text = data.skills[i].name;
+					passiveC.value = thing[i];
+					passiveCoption.appendChild(passiveC);
+					var skillName = data.skills[i].name;
+					var skillNamePath = skillName.split(" ").join("_");
+					//passiveCPicture.src = "skills/" + skillNamePath + ".png";
+					updatePictures(id_num, attackerOrDefender, skillNamePath);
+				}
+
+				if (data.skills[i].slot == "special"){
+					var specialOption = document.createElement("option");
+					specialOption.text = data.skills[i].name;
+					specialOption.value = thing[i];
+					specialSelect.appendChild(specialOption);
+				}
+				if (data.skills[i].slot == "assist"){
+					var assistSkill = document.createElement("option");
+					assistSkill.text = data.skills[i].name;
+					assistSkill.value = thing[i];
+					assistOption.appendChild(assistSkill);
+				}
 			}
 		}
 	}
-
 }
 
+function updatePictures(id_number, aORd, assestName){
+	if (aORd == 0){
+		var passiveAPicture = document.getElementById("attacker_a_picture");
+		var passiveBPicture = document.getElementById("attacker_b_picture");
+		var passiveCPicture = document.getElementById("attacker_c_picture");
+	}
+	else{
+		var passiveAPicture = document.getElementById("defender_a_picture");
+		var passiveBPicture = document.getElementById("defender_b_picture");
+		var passiveCPicture = document.getElementById("defender_c_picture");
+	}
 
+	if (passiveAPicture.src != "skills/noskill.png"){
+		passiveAPicture.src = "skills/" + assestName + ".png";
+	}
+
+	if (passiveBPicture.src != "skills/noskill.png"){
+		passiveBPicture.src = "skills/" + assestName + ".png";
+	}
+
+	if (passiveCPicture.src != "skills/noskill.png"){
+		passiveCPicture.src = "skills/" + assestName + ".png";
+	}
+
+
+}
+function removeOptions(selectbox)
+{
+    var i;
+    for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
+    {
+    	console.log(selectbox[i]);
+        selectbox.remove(i);
+    }
+}

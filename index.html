@@ -19,12 +19,6 @@
 	<div id = "main_frame">
 
 		<div id = "attacker">
-			<div id = "attacker_bar_top">
-				<div class = "attacker_top_title"> 
-					Attacker
-					<select id = "attacker_name" onchange = "initAttacker()";></select>
-				</div>
-			</div>
 
 			<div class = "attacker_top"> 
 				Attacker
@@ -96,6 +90,12 @@
 				</div>
 
 				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "assist_picture" src = "skills/noassist.png"/> 
+					<span class = "skill_letter assist"> Assist </span>
+					<select class = "skill_select" id = "attacker_assist"> </select>
+				</div>
+
+				<div class = "skill_row"> 
 					<img class = "skill_picture" id = "attacker_s_picture" src = "skills/noskill.png"/> 
 					<span class = "skill_letter yellow"> Sacred Seal </span>
 					<select class = "skill_select" id = "attacker_s"> </select>
@@ -113,13 +113,6 @@
 					<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
 					<span class = "bar_label">Merge + </span>
 					<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
-			<div id = "defender_bar_top">
-
-				<div class="bar_top_title"> 
-					Defender
-					<select id = "defender_name" onchange = "initDefender()"></select>
-				</div>
-			</div>
 
 			<div class = "defender_icons">
 				<img id = "defender_picture" class = "hero_icon" src = "heroes/nohero.png" />
@@ -146,10 +139,14 @@
 
 			<div class="hero_skills">
 				<div class = "skill_row">
+					Weapon
 					<img class = "skill_picture" id="defenders_weapon_picture" src="skills/weapon.png"/>
+					<select class = "skill_select" id = "defender_weapon"> </select> 
 				</div>
 				<div class = "skill_row">
+					Special
 					<img class="skill_picture" id = "defenders_special_picture" src="skills/special.png"/>
+					<select class = "skill_select" id = "defender_special"> </select>
 				</div>
 				<div class = "skill_row">
 					<img class = "skill_picture" id = "defenders_a_picture" src="skills/noskill.png"/>
@@ -165,6 +162,11 @@
 					<img class = "skill_picture" id = "defenders_c_picture" src="skills/noskill.png"/>
 					<span class = "skill_letter green"> Passive C </span>
 					<select class = "skill_select" id = "defender_c"> </select>
+				</div>
+				<div class = "skill_row"> 
+					<img class = "skill_picture" id = "assist_picture" src = "skills/noassist.png"/> 
+					<span class = "skill_letter assist"> Assist </span>
+					<select class = "skill_select" id = "defender_assist"> </select>
 				</div>
 				<div class = "skill_row">
 					<img class = "skill_picture" id = "enemies_s_picture" src = "skills/noskill.png"/>
