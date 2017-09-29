@@ -1,4 +1,18 @@
-//heroHTML = "<option value=-1 class=\"hero_option\">Select Hero</option>";
+
+
+//Sort hero array by name
+data.heroes.sort(function(a,b){
+	//console.log(a.name + ", " + b.name + ": " + a.name>b.name);
+	return (a.name.toLowerCase() > b.name.toLowerCase())*2-1;
+})
+
+//Sort skills array by name
+data.skills.sort(function(a,b){
+	//console.log(a.name + ", " + b.name + ": " + a.name>b.name);
+	return (a.name.toLowerCase() + a.slot > b.name.toLowerCase() + b.slot)*2-1;
+})
+
+console.log(data.heroes);
 for (i = 0; i < data.heroes.length; i++){
 	//console.log(data.heroes[i].name);
 	//console.log(i);
@@ -14,6 +28,7 @@ for (i = 0; i < data.heroes.length; i++){
 function initAttacker(){
 	var select = document.getElementById("attacker_name");
     var attackerID = select.options[select.selectedIndex].value;
+    console.log(attackerID);
     //var attackerText = select.options[select.selectedIndex].text;
 	//console.log(attackerID);
 	//console.log(attackerText);
@@ -81,15 +96,21 @@ function initDefender(){
 initDefender();
 
 function getAttackerIcon(id_num){
-    //console.log(id_num);
 	var getAttackerPicture = document.getElementById("attacker_picture");
-	getAttackerPicture.src = "heroes/" + data.heroes[id_num-1].name + ".png";
+	for (i = 0; i < data.heroes.length; i++){
+		if (data.heroes[i].hero_id == id_num){
+			getAttackerPicture.src = "heroes/" + data.heroes[i].name + ".png";
+		}
+	}
 }
 
 function getDefenderIcon(id_num){
-	//console.log(id_num);
 	var getDefenderPicture = document.getElementById("defender_picture");
-	getDefenderPicture.src = "heroes/" + data.heroes[id_num-1].name + ".png";
+	for (i = 0; i < data.heroes.length; i++){
+		if (data.heroes[i].hero_id == id_num){
+			getDefenderPicture.src = "heroes/" + data.heroes[i].name + ".png";
+		}
+	}
 }
 
 
@@ -149,7 +170,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 					var passiveA = document.createElement("option");
 					passiveA.text = data.skills[i].name;
 					//console.log(passiveA.text);
-					passiveA.value = thing[i];
+					passiveA.value = thing[j];
 					passiveAoption.appendChild(passiveA);
 					var skillName = data.skills[i].name;
 					var skillNamePath = skillName.split(" ").join("_");
@@ -195,6 +216,39 @@ function getHeroAssets(id_num, attackerOrDefender){
 			}
 		}
 	}
+
+	//  ------------------ CHANGE ATTACKER ASSETS TO LAST ONE IN LIST ----------------------
+	//var getLastWeapon = document.getElementById("attacker_weapon");
+	//getLastWeapon.selectedIndex = getLastWeapon.length-1;
+
+	var getLastAPassive = document.getElementById("attacker_a");
+	getLastAPassive.selectedIndex = getLastAPassive.length-1;
+
+	var getLastBPassive = document.getElementById("attacker_b");
+	getLastBPassive.selectedIndex = getLastBPassive.length-1;
+
+	var getLastCPassive = document.getElementById("attacker_c");
+	getLastCPassive.selectedIndex = getLastCPassive.length-1;
+
+	var getLastSpecial = document.getElementById("attacker_special");
+	getLastSpecial.selectedIndex = getLastSpecial.length-1;
+
+	//  ------------------ CHANGE DEFENDER ASSETS TO LAST ONE IN LIST ----------------------
+
+	//getLastWeapon = document.getElementById("defender_weapon");
+	//getLastWeapon.selectedIndex = getLastWeapon.length-1;
+
+	getLastAPassive = document.getElementById("defender_a");
+	getLastAPassive.selectedIndex = getLastAPassive.length-1;
+
+	getLastBPassive = document.getElementById("defender_b");
+	getLastBPassive.selectedIndex = getLastBPassive.length-1;
+
+	getLastCPassive = document.getElementById("defender_c");
+	getLastCPassive.selectedIndex = getLastCPassive.length-1;
+
+	getLastSpecial = document.getElementById("defender_special");
+	getLastSpecial.selectedIndex = getLastSpecial.length-1;
 }
 
 function updateAPicture(id_number, aORd, assestName){
