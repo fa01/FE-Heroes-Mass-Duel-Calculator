@@ -122,7 +122,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 	removeOptions(passiveCoption);
 	removeOptions(specialSelect);
 	removeOptions(assistOption);
-	console.log(passiveAPicture);
+	//console.log(passiveAPicture);
 	passiveAPicture.src = "skills/noskill.png";
 	passiveBPicture.src = "skills/noskill.png";
 	passiveCPicture.src = "skills/noskill.png";
@@ -148,7 +148,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 				if (data.skills[i].slot == "a"){
 					var passiveA = document.createElement("option");
 					passiveA.text = data.skills[i].name;
-					console.log(passiveA.text);
+					//console.log(passiveA.text);
 					passiveA.value = thing[i];
 					passiveAoption.appendChild(passiveA);
 					var skillName = data.skills[i].name;
@@ -234,7 +234,7 @@ function removeOptions(selectbox)
     var i;
     for(i = selectbox.options.length - 1 ; i >= 0 ; i--)
     {
-    	console.log(selectbox[i]);
+    	//console.log(selectbox[i]);
         selectbox.remove(i);
     }
 }

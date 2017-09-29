@@ -1,3 +1,4 @@
+/* --------------------------------------- GENERAL --------------------------------------------*/
 body{
 	background-color: black;
 	font-family: 'Advent Pro';
@@ -7,18 +8,37 @@ body{
 }
 
 h1{
-	position: center;
+	text-align: center;
 }
 
 #main_frame{
-	width:910px;
+	width: 910px;
 	margin: 0 auto;
 }
+
+/* ----------------------------------------- BOTH -----------------------------------------------*/
+
+.hero_icon{
+	border: 5px solid white;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stat_row{
+	padding: 10px 10px 10px 10px;
+	display: inline;
+	width: 600px;
+	margin: 0 auto;
+}
+
+/* --------------------------------------- ATTACKER --------------------------------------------*/
 
 #attacker{
 	float: left;
 	border: 3px solid #73AD21;
 }
+
 
 .attacker_top{
 	padding-bottom: 20px;
@@ -37,15 +57,16 @@ h1{
 	margin: auto;
 }
 
-.attacker_stas_num{
+.attacker_stats_num{
 	margin: auto;
+    display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: space-around;
 }
 
 
-.stat_row{
-	padding: 10px 10px 10px 10px;
-	display: inline;
-}
+/* --------------------------------------- DEFENDER --------------------------------------------*/
 
 #defender{
 	float: right;
@@ -54,12 +75,9 @@ h1{
 }
 
 .defender_stats_num{
-	position:static;
-	right:0;
-	top:0;
-	padding: 18px 10px 10px 10px;
-	width:220px;
-	height:132px;
-	line-height:23px;
-	display: inline;
+	margin: auto;
+    display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: space-around;	
 }
