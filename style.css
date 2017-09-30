@@ -23,6 +23,11 @@ h1{
 	display: block;
     margin-left: auto;
     margin-right: auto;
+    border-radius: 15px;
+    /*border: 2px solid #73AD21;*/
+    padding: 10px; 
+    width: 100px;
+    height: 100px;
 }
 
 .stat_row{
@@ -31,6 +36,27 @@ h1{
 	width: 600px;
 	margin: 0 auto;
 }
+
+.stats_name{
+	position:static;
+	right:0;
+	top:0;
+	padding: 18px 10px 10px 10px;
+	width:220px;
+	height:132px;
+	line-height:23px;
+	display: inline;
+	margin: auto;
+}
+
+.stats_num{
+	margin: auto;
+    display: -webkit-flex; /* Safari */
+    -webkit-justify-content: space-around; /* Safari 6.1+ */
+    display: flex;
+    justify-content: space-around;
+}
+
 
 /* --------------------------------------- ATTACKER --------------------------------------------*/
 
@@ -45,25 +71,6 @@ h1{
 	padding-right: -50px;
 }
 
-.attacker_stats_name{
-	position:static;
-	right:0;
-	top:0;
-	padding: 18px 10px 10px 10px;
-	width:220px;
-	height:132px;
-	line-height:23px;
-	display: inline;
-	margin: auto;
-}
-
-.attacker_stats_num{
-	margin: auto;
-    display: -webkit-flex; /* Safari */
-    -webkit-justify-content: space-around; /* Safari 6.1+ */
-    display: flex;
-    justify-content: space-around;
-}
 
 
 /* --------------------------------------- DEFENDER --------------------------------------------*/
@@ -74,10 +81,23 @@ h1{
 	border: 3px solid #73AD21;
 }
 
-.defender_stats_num{
+.defender_top{
+	padding-bottom: 20px;
+	padding-right: -50px;
+}
+
+
+/* --------------------------------------- RESULTS --------------------------------------------*/
+
+#frame_results{
+	float: center;
+	margin: auto;
+	text-align: center;
+	border: 3px solid #73AD21;
 	margin: auto;
     display: -webkit-flex; /* Safari */
     -webkit-justify-content: space-around; /* Safari 6.1+ */
     display: flex;
-    justify-content: space-around;	
+    justify-content: space-around;
+    display: block;
 }

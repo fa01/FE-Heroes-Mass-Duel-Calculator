@@ -42,7 +42,7 @@
 			</div>
 
 
-			<div class = "attacker_stats_name">
+			<div class = "stats_name">
 				<span class = "stat_row"> HP:  </span>
 				<span class = "stat_row"> Atk: </span>
 				<span class = "stat_row"> Spd: </span>
@@ -50,7 +50,7 @@
 				<span class = "stat_row"> Res: </span>
 			</div>
 
-			<div class = "attacker_stats_num">
+			<div class = "stats_num">
 				<span class = "stat_number" id = "attacker_hp"></span>
 				<span class = "stat_number" id = "attacker_atk"></span>
 				<span class = "stat_number" id = "attacker_spd"></span>
@@ -104,15 +104,20 @@
 		</div>
 
 		<div id = "defender">
+
 			<div class="defender_top"> 
 				Defender
 				<select id = "defender_name" onchange = "initDefender()"></select>
 
 				<div class="defender_options">
 					<span class="bar_label">Rarity:</span>
-					<input id = "defender_rarity" data-var = "defender.fl.rarity" type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
-					<span class = "bar_label">Merge + </span>
-					<input id = "defender_merge" data-var = "defender.fl.merge" class = "smallnuminput" type = "number" value = 0 min = 0 max = 10/>
+					<input id = "defender_rarity"  type = "number" class = "rarityinput smallnuminput" value = 5 min = 1 max = 5 />
+					<span class = "defender_bar_label">Merge + </span>
+					<input id = "defender_merge" class="smallnuminput" type="number" value=0 min=0 max=10 />
+					<span class="button reset_button" id="reset_attacker">Reset</span>
+					<button type="button">Reset</button>
+				</div>
+			</div>
 
 			<div class = "defender_icons">
 				<img id = "defender_picture" class = "hero_icon" src = "heroes/nohero.png" />
@@ -120,7 +125,7 @@
 				<img id = "attacker_movement" class="movement_icon" src="weapons/noweapon.png"/>
 			</div>
 
-			<div class = "defender_stats_name">
+			<div class = "stats_name">
 				<span class = "stat_row"> HP:  </span>
 				<span class = "stat_row"> Atk: </span>
 				<span class = "stat_row"> Spd: </span>
@@ -128,7 +133,7 @@
 				<span class = "stat_row"> Res: </span>
 			</div>
 
-			<div class = "defender_stats_num">
+			<div class = "stats_num">
 				<span class = "stat_number" id = "defender_hp"></span>
 				<span class = "stat_number" id = "defender_atk"></span>
 				<span class = "stat_number" id = "defender_spd"></span>
@@ -174,6 +179,7 @@
 					<select class = "skill_select" id = "defender_s"> </select>
 				</div>
 			</div>
+		</div>
 
 		<div id = "frame_results">
 			<div id = "results_top_bar">
