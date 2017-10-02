@@ -19,12 +19,14 @@ data.skills.sort(function(a,b){
 })
 
 attacker = {};
+attacker.name = "";
 attacker.rarity = 0;
 attacker.hp = 0;
 attacker.atk = 0;
 attacker.spd = 0;
 attacker.def = 0;
 attacker.res = 0;
+attacker.weaponName = "";
 attacker.weaponHp = 0;
 attacker.weaponAtk = 0;
 attacker.weaponSpd = 0;
@@ -34,18 +36,21 @@ attacker.weaponID = 0;
 
 
 defender = {};
+defender.name = "";
 defender.rarity = 0
 defender.hp = 0;
 defender.atk = 0;
 defender.spd = 0;
 defender.def = 0;
 defender.res = 0;
+defender.weaponName = "";
 defender.weaponAtk = 0;
 defender.weaponAtk = 0;
 defender.weaponSpd = 0;
 defender.weaponDef = 0;
 defender.weaponRes = 0;
 defender.weaponID = 0;
+defender.hpLeft = 0;
 
 for (i = 0; i < data.heroes.length; i++){
 	var option = document.createElement("option");
@@ -59,6 +64,7 @@ function initAttacker(){
 
 	var select = document.getElementById("attacker_name");
     var attackerID = select.options[select.selectedIndex].value;
+    attacker.name = select.options[select.selectedIndex].text;
     var attackerRarity = document.getElementById("attacker_rarity").value;
     attacker.rarity = attackerRarity;
     var weapon = document.getElementById("attacker_weapon");
@@ -98,7 +104,7 @@ function initDefender(){
 
 	var getDefender = document.getElementById("defender_name");
     var defenderID = getDefender.options[getDefender.selectedIndex].value;
-    var defenderText = getDefender.options[getDefender.selectedIndex].text;
+    defender.name = select.options[select.selectedIndex].text;
     var defenderRarity = document.getElementById("defender_rarity").value;
     defender.rarity = defenderRarity;
 
@@ -109,7 +115,7 @@ function initDefender(){
 			defender.spd = data.heroes[i].basespd +  data.growths[defender.rarity - 1][data.heroes[i].spdgrowth];
 			defender.def = data.heroes[i].basedef +  data.growths[defender.rarity - 1][data.heroes[i].defgrowth];
 			defender.res = data.heroes[i].baseres +  data.growths[defender.rarity - 1][data.heroes[i].resgrowth];
-			
+
 			getDefenderIcon(i);
 		}
 	}
@@ -243,6 +249,8 @@ function getHeroAssets(id_num, attackerOrDefender){
 		getLastWeapon.selectedIndex = getLastWeapon.length-1;
 		var weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
 		attacker.weaponID = weaponValue.value;
+		attacker.weaponName = weaponValue.text;
+		//console.log(attacker.weaponName);
 		//console.log(attacker.weaponID);
 
 		var getLastAPassive = document.getElementById("attacker_a");
@@ -267,6 +275,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 		getLastWeapon.selectedIndex = getLastWeapon.length-1;
 		weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
 		defender.weaponID = weaponValue.value;
+		defender.weaponName = weaponValue.text;
 		//console.log(defender.weaponID);
 
 		getLastAPassive = document.getElementById("defender_a");
@@ -393,6 +402,39 @@ function removeOptions(selectbox)
     	//console.log(selectbox[i]);
         selectbox.remove(i);
     }
+}
+
+function calculate(){
+	var battleText = "";
+	battleText += attacker.name + " initiates combat. ";
+
+	var damageDealt = attacker.atk - defender.def;
+	battleText += damageDealt + " damage dealt. ";
+	defender.hpLeft = defender.hp - damageDealt;
+
+	if (defender.hpLeft < 0){
+		defender.hpLeft = 0;
+	}
+	battleText += "<br>" + "Defender, "+ defender.name + " HP: " + defender.hp + " -> " + defender.hpLeft;
+	
+	
+	if (attacker.weaponName.indexOf("Brave") >= 0){
+		if (defender.hpLeft != 0){
+			var previousHpLeft = defender.hpLeft;
+			defender.hpLeft = defender.hpLeft - damageDealt;
+			if (defender.hpLeft < 0){
+				defender.hpLeft = 0;
+			}
+			battleText += "<br><br>" + attacker.name + " attacks again immediately due to " + attacker.weaponName;
+			battleText += "<br>" + damageDealt + " damage dealt. ";
+			battleText += "<br>" + "Defender, "+ defender.name + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
+
+		} 
+	}
+		
+	
+	var element = document.getElementById("one_on_one");
+	element.innerHTML = battleText;
 }
 
 function sortSelect(selElem) {
