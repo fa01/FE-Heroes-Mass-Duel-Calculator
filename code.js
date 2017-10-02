@@ -1,4 +1,10 @@
-
+//Banes/Boons of +/- 4 are because of Growth Shifts of 3
+//Credit for Growth Table: from https://feheroes.wiki/Stat_Growth
+data.growths = [[6,8,9,11,13,14,16,18,19,21,23,24],
+[7,8,10,12,14,15,17,19,21,23,25,26],
+[7,9,11,13,15,17,19,21,23,25,27,29],
+[8,10,12,14,16,18,20,22,24,26,28,31],
+[8,10,13,15,17,19,22,24,26,28,30,33]];
 
 //Sort hero array by name
 data.heroes.sort(function(a,b){
@@ -12,45 +18,68 @@ data.skills.sort(function(a,b){
 	return (a.name.toLowerCase() + a.slot > b.name.toLowerCase() + b.slot)*2-1;
 })
 
-console.log(data.heroes);
+attacker = {};
+attacker.rarity = 0;
+attacker.hp = 0;
+attacker.atk = 0;
+attacker.spd = 0;
+attacker.def = 0;
+attacker.res = 0;
+attacker.weaponHp = 0;
+attacker.weaponAtk = 0;
+attacker.weaponSpd = 0;
+attacker.weaponDef = 0;
+attacker.weaponRes = 0;
+attacker.weaponID = 0;
+
+
+defender = {};
+defender.rarity = 0
+defender.hp = 0;
+defender.atk = 0;
+defender.spd = 0;
+defender.def = 0;
+defender.res = 0;
+defender.weaponAtk = 0;
+defender.weaponAtk = 0;
+defender.weaponSpd = 0;
+defender.weaponDef = 0;
+defender.weaponRes = 0;
+defender.weaponID = 0;
+
 for (i = 0; i < data.heroes.length; i++){
-	//console.log(data.heroes[i].name);
-	//console.log(i);
-	//heroHTML += "<option value=" + i + " class=\"hero_option\">" + data.heroes[i].name + "</option>";
 	var option = document.createElement("option");
 	option.text = data.heroes[i].name;
 	option.value = data.heroes[i].hero_id;
 	var select = document.getElementById("attacker_name");
 	select.appendChild(option);
-	//console.log(select);
 }
 
 function initAttacker(){
+
 	var select = document.getElementById("attacker_name");
     var attackerID = select.options[select.selectedIndex].value;
-    console.log(attackerID);
-    //var attackerText = select.options[select.selectedIndex].text;
-	//console.log(attackerID);
-	//console.log(attackerText);
+    var attackerRarity = document.getElementById("attacker_rarity").value;
+    attacker.rarity = attackerRarity;
+    var weapon = document.getElementById("attacker_weapon");
+    //console.log(weapon);
 
-	var element = document.getElementById("attacker_hp");
-	element.innerHTML = data.heroes[attackerID-1].basehp;
+	for (i = 0; i < data.heroes.length; i++){
+		if (data.heroes[i].hero_id == attackerID){
 
-	element = document.getElementById("attacker_atk");
-	element.innerHTML = data.heroes[attackerID-1].baseatk;
+			attacker.hp = data.heroes[i].basehp +  data.growths[attackerRarity - 1][data.heroes[i].hpgrowth];
+			attacker.atk = data.heroes[i].baseatk +  data.growths[attackerRarity - 1][data.heroes[i].atkgrowth];
+			attacker.spd = data.heroes[i].basespd +  data.growths[attackerRarity - 1][data.heroes[i].spdgrowth];
+			attacker.def = data.heroes[i].basedef +  data.growths[attackerRarity - 1][data.heroes[i].defgrowth];
+			attacker.res = data.heroes[i].baseres +  data.growths[attackerRarity - 1][data.heroes[i].resgrowth];
 
-	element = document.getElementById("attacker_spd");
-	element.innerHTML = data.heroes[attackerID-1].basespd;
-
-	element = document.getElementById("attacker_def");
-	element.innerHTML = data.heroes[attackerID-1].basedef;
-
-	element = document.getElementById("attacker_res");
-	element.innerHTML = data.heroes[attackerID-1].baseres;
-
-	getAttackerIcon(attackerID);
+			getAttackerIcon(i);
+		}
+	}
 	getHeroAssets(attackerID, 0);
+	updateWithWeapon(0);
 }
+
 
 initAttacker();
 
@@ -66,30 +95,27 @@ for (i = 0; i < data.heroes.length; i++){
 }
 
 function initDefender(){
+
 	var getDefender = document.getElementById("defender_name");
     var defenderID = getDefender.options[getDefender.selectedIndex].value;
     var defenderText = getDefender.options[getDefender.selectedIndex].text;
-	//console.log(defenderID);
-	//console.log(defenderText);
-	//console.log(data.heroes[defenderID-3]);
+    var defenderRarity = document.getElementById("defender_rarity").value;
+    defender.rarity = defenderRarity;
 
-	var defenderStat = document.getElementById("defender_hp");
-	defenderStat.innerHTML = data.heroes[defenderID-1].basehp;
+    for (i = 0; i < data.heroes.length; i++){
+		if (data.heroes[i].hero_id == defenderID){
+			defender.hp = data.heroes[i].basehp +  data.growths[defender.rarity - 1][data.heroes[i].hpgrowth];
+			defender.atk = data.heroes[i].baseatk +  data.growths[defender.rarity - 1][data.heroes[i].atkgrowth];
+			defender.spd = data.heroes[i].basespd +  data.growths[defender.rarity - 1][data.heroes[i].spdgrowth];
+			defender.def = data.heroes[i].basedef +  data.growths[defender.rarity - 1][data.heroes[i].defgrowth];
+			defender.res = data.heroes[i].baseres +  data.growths[defender.rarity - 1][data.heroes[i].resgrowth];
+			
+			getDefenderIcon(i);
+		}
+	}
 
-	element2 = document.getElementById("defender_atk");
-	element2.innerHTML = data.heroes[defenderID-1].baseatk;
-
-	element2 = document.getElementById("defender_spd");
-	element2.innerHTML = data.heroes[defenderID-1].basespd;
-
-	element2 = document.getElementById("defender_def");
-	element2.innerHTML = data.heroes[defenderID-1].basedef;
-
-	element2 = document.getElementById("defender_res");
-	element2.innerHTML = data.heroes[defenderID-1].baseres;
-
-	getDefenderIcon(defenderID);
 	getHeroAssets(defenderID, 1);
+	updateWithWeapon(1);
 	
 }
 
@@ -97,20 +123,12 @@ initDefender();
 
 function getAttackerIcon(id_num){
 	var getAttackerPicture = document.getElementById("attacker_picture");
-	for (i = 0; i < data.heroes.length; i++){
-		if (data.heroes[i].hero_id == id_num){
-			getAttackerPicture.src = "heroes/" + data.heroes[i].name + ".png";
-		}
-	}
+	getAttackerPicture.src = "heroes/" + data.heroes[id_num].name + ".png";
 }
 
 function getDefenderIcon(id_num){
 	var getDefenderPicture = document.getElementById("defender_picture");
-	for (i = 0; i < data.heroes.length; i++){
-		if (data.heroes[i].hero_id == id_num){
-			getDefenderPicture.src = "heroes/" + data.heroes[i].name + ".png";
-		}
-	}
+	getDefenderPicture.src = "heroes/" + data.heroes[id_num].name + ".png";
 }
 
 
@@ -218,38 +236,122 @@ function getHeroAssets(id_num, attackerOrDefender){
 	}
 
 	//  ------------------ CHANGE ATTACKER ASSETS TO LAST ONE IN LIST ----------------------
-	//var getLastWeapon = document.getElementById("attacker_weapon");
-	//getLastWeapon.selectedIndex = getLastWeapon.length-1;
+	if (attackerOrDefender == 0){
+		var getLastWeapon = document.getElementById("attacker_weapon");
 
-	var getLastAPassive = document.getElementById("attacker_a");
-	getLastAPassive.selectedIndex = getLastAPassive.length-1;
+		sortSelect(getLastWeapon);
+		getLastWeapon.selectedIndex = getLastWeapon.length-1;
+		var weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
+		attacker.weaponID = weaponValue.value;
+		//console.log(attacker.weaponID);
 
-	var getLastBPassive = document.getElementById("attacker_b");
-	getLastBPassive.selectedIndex = getLastBPassive.length-1;
+		var getLastAPassive = document.getElementById("attacker_a");
+		getLastAPassive.selectedIndex = getLastAPassive.length-1;
 
-	var getLastCPassive = document.getElementById("attacker_c");
-	getLastCPassive.selectedIndex = getLastCPassive.length-1;
+		var getLastBPassive = document.getElementById("attacker_b");
+		getLastBPassive.selectedIndex = getLastBPassive.length-1;
 
-	var getLastSpecial = document.getElementById("attacker_special");
-	getLastSpecial.selectedIndex = getLastSpecial.length-1;
+		var getLastCPassive = document.getElementById("attacker_c");
+		getLastCPassive.selectedIndex = getLastCPassive.length-1;
+
+		var getLastSpecial = document.getElementById("attacker_special");
+		getLastSpecial.selectedIndex = getLastSpecial.length-1;
+	}
 
 	//  ------------------ CHANGE DEFENDER ASSETS TO LAST ONE IN LIST ----------------------
+	else{
+		//getLastWeapon = document.getElementById("defender_weapon");
+		//getLastWeapon.selectedIndex = getLastWeapon.length-1;
+		var getLastWeapon = document.getElementById("defender_weapon");
+		sortSelect(getLastWeapon);
+		getLastWeapon.selectedIndex = getLastWeapon.length-1;
+		weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
+		defender.weaponID = weaponValue.value;
+		//console.log(defender.weaponID);
 
-	//getLastWeapon = document.getElementById("defender_weapon");
-	//getLastWeapon.selectedIndex = getLastWeapon.length-1;
+		getLastAPassive = document.getElementById("defender_a");
+		getLastAPassive.selectedIndex = getLastAPassive.length-1;
 
-	getLastAPassive = document.getElementById("defender_a");
-	getLastAPassive.selectedIndex = getLastAPassive.length-1;
+		getLastBPassive = document.getElementById("defender_b");
+		getLastBPassive.selectedIndex = getLastBPassive.length-1;
 
-	getLastBPassive = document.getElementById("defender_b");
-	getLastBPassive.selectedIndex = getLastBPassive.length-1;
+		getLastCPassive = document.getElementById("defender_c");
+		getLastCPassive.selectedIndex = getLastCPassive.length-1;
 
-	getLastCPassive = document.getElementById("defender_c");
-	getLastCPassive.selectedIndex = getLastCPassive.length-1;
-
-	getLastSpecial = document.getElementById("defender_special");
-	getLastSpecial.selectedIndex = getLastSpecial.length-1;
+		getLastSpecial = document.getElementById("defender_special");
+		getLastSpecial.selectedIndex = getLastSpecial.length-1;
+	}
 }
+
+function updateWithWeapon(aORd){
+	if (aORd == 0){
+		for (i = 0; i < data.skills.length; i++){
+			if (data.skills[i].skill_id == attacker.weaponID){
+				attacker.weaponHp = data.skills[i].hp;
+				attacker.weaponAtk = data.skills[i].atk;
+				attacker.weaponSpd = data.skills[i].spd;
+				attacker.weaponDef = data.skills[i].def;
+				attacker.weaponRes = data.skills[i].res;
+
+				attacker.hp += attacker.weaponHp;
+				attacker.atk += attacker.weaponAtk;
+				attacker.spd += attacker.weaponSpd;
+				attacker.def += attacker.weaponDef;
+				attacker.res += attacker.weaponRes;
+
+				var element = document.getElementById("attacker_hp");
+				element.innerHTML = attacker.hp;
+
+				element = document.getElementById("attacker_atk");
+				element.innerHTML = attacker.atk;
+
+				element = document.getElementById("attacker_spd");
+				element.innerHTML = attacker.spd;
+
+				element = document.getElementById("attacker_def");
+				element.innerHTML = attacker.def;
+
+				element = document.getElementById("attacker_res");
+				element.innerHTML = attacker.res;
+			}
+		}
+	}
+	else {
+		for (i = 0; i < data.skills.length; i++){
+			if (data.skills[i].skill_id == defender.weaponID){
+				defender.weaponHp = data.skills[i].hp;
+				defender.weaponAtk = data.skills[i].atk;
+				console.log(defender.weaponAtk);
+				defender.weaponSpd = data.skills[i].spd;
+				defender.weaponDef = data.skills[i].def;
+				defender.weaponRes = data.skills[i].res;
+
+				defender.hp += defender.weaponHp;
+				defender.atk += defender.weaponAtk;
+				console.log(defender.atk);
+				defender.spd += defender.weaponSpd;
+				defender.def += defender.weaponDef;
+				defender.res += defender.weaponRes;
+
+				var element = document.getElementById("defender_hp");
+				element.innerHTML = defender.hp;
+
+				element = document.getElementById("defender_atk");
+				element.innerHTML = defender.atk;
+
+				element = document.getElementById("defender_spd");
+				element.innerHTML = defender.spd;
+
+				element = document.getElementById("defender_def");
+				element.innerHTML = defender.def;
+
+				element = document.getElementById("defender_res");
+				element.innerHTML = defender.res;
+			}
+		}
+	}
+}
+
 
 function updateAPicture(id_number, aORd, assestName){
 	if (aORd == 0){
@@ -291,4 +393,14 @@ function removeOptions(selectbox)
     	//console.log(selectbox[i]);
         selectbox.remove(i);
     }
+}
+
+function sortSelect(selElem) {
+  for (var i = 0; i < (selElem.options.length - 1); i++)
+      for (var j = i + 1; j < selElem.options.length; j++)
+          if (parseInt(selElem.options[j].value) < parseInt(selElem.options[i].value)) {
+              var dummy = new Option(selElem.options[i].text, selElem.options[i].value);
+              selElem.options[i] = new Option(selElem.options[j].text, selElem.options[j].value);
+              selElem.options[j] = dummy;
+          }
 }
