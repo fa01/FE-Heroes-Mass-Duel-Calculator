@@ -33,6 +33,7 @@ attacker.weaponSpd = 0;
 attacker.weaponDef = 0;
 attacker.weaponRes = 0;
 attacker.weaponID = 0;
+attacker.hpLeft = 0;
 
 
 defender = {};
@@ -104,7 +105,8 @@ function initDefender(){
 
 	var getDefender = document.getElementById("defender_name");
     var defenderID = getDefender.options[getDefender.selectedIndex].value;
-    defender.name = select.options[select.selectedIndex].text;
+    defender.name = getDefender.options[select.selectedIndex].text;
+    console.log(defender.name);
     var defenderRarity = document.getElementById("defender_rarity").value;
     defender.rarity = defenderRarity;
 
@@ -330,14 +332,14 @@ function updateWithWeapon(aORd){
 			if (data.skills[i].skill_id == defender.weaponID){
 				defender.weaponHp = data.skills[i].hp;
 				defender.weaponAtk = data.skills[i].atk;
-				console.log(defender.weaponAtk);
+				//console.log(defender.weaponAtk);
 				defender.weaponSpd = data.skills[i].spd;
 				defender.weaponDef = data.skills[i].def;
 				defender.weaponRes = data.skills[i].res;
 
 				defender.hp += defender.weaponHp;
 				defender.atk += defender.weaponAtk;
-				console.log(defender.atk);
+				//console.log(defender.atk);
 				defender.spd += defender.weaponSpd;
 				defender.def += defender.weaponDef;
 				defender.res += defender.weaponRes;
@@ -404,9 +406,36 @@ function removeOptions(selectbox)
     }
 }
 
+function combatDecisions(){
+	this.hasBraveWeapon = function(weaponName){
+		if (weaponName.indexOf("Brave") >= 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+}
+
 function calculate(){
-	var battleText = "";
-	battleText += attacker.name + " initiates combat. ";
+	//Setup
+	var combatQuestions = new combatDecisions();
+	var attackerName = attacker.name.fontcolor("turquoise");
+	var defenderName = defender.name.fontcolor("red");
+	console.log(defender.name);
+	//Checking if attacker or defender will double
+	var attackerSpdGreater = 0;
+	var defenderSpdGreater = 0;
+	if (attacker.spd - defender.spd >= 5){
+		attackerSpdGreater = 1;
+	}
+	else if (defender.spd - attacker.spd >= 5){
+		defenderSpdGreater = 1;
+	}
+
+	//Initiating Combat
+	var battleText = "<br>";
+	battleText += attackerName + " initiates combat. ";
 
 	var damageDealt = attacker.atk - defender.def;
 	battleText += damageDealt + " damage dealt. ";
@@ -415,26 +444,89 @@ function calculate(){
 	if (defender.hpLeft < 0){
 		defender.hpLeft = 0;
 	}
-	battleText += "<br>" + "Defender, "+ defender.name + " HP: " + defender.hp + " -> " + defender.hpLeft;
+	battleText += "<br>" + defenderName + " HP: " + defender.hp + " -> " + defender.hpLeft;
 	
 	
-	if (attacker.weaponName.indexOf("Brave") >= 0){
+	if (combatQuestions.hasBraveWeapon(attacker.weaponName) == true){
 		if (defender.hpLeft != 0){
 			var previousHpLeft = defender.hpLeft;
 			defender.hpLeft = defender.hpLeft - damageDealt;
 			if (defender.hpLeft < 0){
 				defender.hpLeft = 0;
 			}
-			battleText += "<br><br>" + attacker.name + " attacks again immediately due to " + attacker.weaponName;
+			battleText += "<br><br>" + attackerName + " attacks again immediately due to " + attacker.weaponName;
 			battleText += "<br>" + damageDealt + " damage dealt. ";
-			battleText += "<br>" + "Defender, "+ defender.name + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
-
+			battleText += "<br>" + defenderName + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
+			battleText += "<br>";
 		} 
 	}
-		
+
+	if (defender.hpLeft != 0){
+		damageDealt = defender.atk - attacker.def;
+		attacker.hpLeft = attacker.hp - damageDealt;
+		battleText += "<br>" + defenderName + " counterattacks. ";
+		battleText += damageDealt + " damage dealt.";
+		battleText += "<br>" + attackerName + " HP: " + attacker.hp + " -> " + attacker.hpLeft;
+
+		if (combatQuestions.hasBraveWeapon(defender.weaponName) == true){
+			if (attacker.hpLeft != 0){
+				var previousHpLeft = attacker.hpLeft;
+				attacker.hpLeft = attacker.hpLeft - damageDealt;
+				if (attacker.hpLeft < 0){
+					attacker.hpLeft = 0;
+				}
+				battleText += "<br><br>" + defenderName + " attacks again immediately due to " + defender.weaponName;
+				battleText += "<br>" + damageDealt + " damage dealt. ";
+				battleText += "<br>" + attackerName + " HP: " + previousHpLeft + " -> " + attacker.hpLeft;
+				battleText += "<br>";
+			} 
+		}
+
+		if (attackerSpdGreater == 1){
+			if (defender.hpLeft != 0){
+				damageDealt = attacker.atk - defender.def;
+				previousHpLeft = defender.hpLeft;
+				defender.hpLeft = defender.hpLeft - damageDealt;
+				if (defender.hpLeft < 0){
+					defender.hpLeft = 0;
+				}
+				battleText += "<br>" + attackerName + " makes a follow-up attack."
+				battleText += "<br>" + damageDealt + " damage dealt. ";
+				battleText += "<br>" + defenderName + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
+				battleText += "<br>";
+			}
+		}
+
+		if (defenderSpdGreater == 1){
+			if (attacker.hpLeft != 0){
+				damageDealt = defender.atk - attacker.def;
+				previousHpLeft = attacker.hpLeft;
+				attacker.hpLeft = attacker.hpLeft - damageDealt;
+				if (attacker.hpLeft < 0){
+					attacker.hpLeft = 0;
+				}
+				battleText += "<br>" + defenderName + " makes a follow-up attack."
+				battleText += "<br>" + damageDealt + " damage dealt. ";
+				battleText += "<br>" + attackerName + " HP: " + previousHpLeft + " -> " + attacker.hpLeft;
+				battleText += "<br>";
+			}
+		}
+	}
+
+	if (defender.hpLeft != 0 && attacker.hpLeft != 0){
+		battleText += "<br>" + "Draw!";
+	}
+	else if (defender.hpLeft == 0){
+		battleText += "<br>" + "Attacker, " + attacker.name + " wins!";
+	}
+	else{
+		battleText += "<br>" + "Defender, " + defender.name + " wins!";
+	}
 	
 	var element = document.getElementById("one_on_one");
 	element.innerHTML = battleText;
+	
+	
 }
 
 function sortSelect(selElem) {

@@ -91,9 +91,9 @@ h1{
 
 #frame_results{
 	float: center;
-	margin: auto;
 	text-align: center;
 	border: 3px solid #73AD21;
+	width: 350px;
 	margin: auto;
     display: -webkit-flex; /* Safari */
     -webkit-justify-content: space-around; /* Safari 6.1+ */
