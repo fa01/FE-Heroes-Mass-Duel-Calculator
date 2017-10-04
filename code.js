@@ -21,6 +21,8 @@ data.skills.sort(function(a,b){
 attacker = {};
 attacker.name = "";
 attacker.rarity = 0;
+attacker.weapontype = "";
+attacker.color = "";
 attacker.hp = 0;
 attacker.atk = 0;
 attacker.spd = 0;
@@ -38,7 +40,9 @@ attacker.hpLeft = 0;
 
 defender = {};
 defender.name = "";
-defender.rarity = 0
+defender.rarity = 0;
+attacker.color = "";
+attacker.weapontype = "";
 defender.hp = 0;
 defender.atk = 0;
 defender.spd = 0;
@@ -79,7 +83,8 @@ function initAttacker(){
 			attacker.spd = data.heroes[i].basespd +  data.growths[attackerRarity - 1][data.heroes[i].spdgrowth];
 			attacker.def = data.heroes[i].basedef +  data.growths[attackerRarity - 1][data.heroes[i].defgrowth];
 			attacker.res = data.heroes[i].baseres +  data.growths[attackerRarity - 1][data.heroes[i].resgrowth];
-
+			attacker.weapontype = data.heroes[i].weapontype;
+			attacker.color = data.heroes[i].color;
 			getAttackerIcon(i);
 		}
 	}
@@ -117,7 +122,8 @@ function initDefender(){
 			defender.spd = data.heroes[i].basespd +  data.growths[defender.rarity - 1][data.heroes[i].spdgrowth];
 			defender.def = data.heroes[i].basedef +  data.growths[defender.rarity - 1][data.heroes[i].defgrowth];
 			defender.res = data.heroes[i].baseres +  data.growths[defender.rarity - 1][data.heroes[i].resgrowth];
-
+			defender.weapontype = data.heroes[i].weapontype;
+			defender.color = data.heroes[i].color;
 			getDefenderIcon(i);
 		}
 	}
@@ -408,12 +414,60 @@ function removeOptions(selectbox)
 
 function combatDecisions(){
 	this.hasBraveWeapon = function(weaponName){
-		if (weaponName.indexOf("Brave") >= 0){
+		if (weaponName.indexOf("Brave") >= 0 || weaponName.indexOf("Dire Thunder") >= 0 || weaponName.indexOf("Amiti") >= 0){
 			return true;
 		}
 		else{
 			return false;
 		}
+	}
+
+	this.hasWeaponAdvantage = function(attackerWeaponType, defenderWeaponType){
+		if (attackerWeaponType == "sword" && defenderWeaponType == "lance"){
+			console.log("attacker's weapon = "+ attackerWeaponType);
+			console.log("defender's weapon = "+ defenderWeaponType);
+			var advantage = Math.floor(defender.atk * 1.2);
+			defender.atk = advantage;
+
+			var disadvantage = Math.floor(attacker.atk * 0.8);
+			attacker.atk = disadvantage;
+		}
+		else if (attackerWeaponType == "lance" && defenderWeaponType == "axe"){
+			var advantage = Math.floor(defender.atk * 1.2);
+			defender.atk = advantage;
+
+			var disadvantage = Math.floor(attacker.atk * 0.8);
+			attacker.atk = disadvantage;
+		}
+		else if (attackerWeaponType == "axe" && defenderWeaponType == "sword"){
+			var advantage = Math.floor(defender.atk * 1.2);
+			defender.atk = advantage;
+
+			var disadvantage = Math.floor(attacker.atk * 0.8);
+			attacker.atk = disadvantage;
+		}
+		else if (attackerWeaponType == "lance" && defenderWeaponType == "sword"){
+			var advantage = Math.floor(attacker.atk * 1.2);
+			attacker.atk = advantage;
+
+			var disadvantage = Math.floor(defender.atk * 0.8);
+			defender.atk = disadvantage;
+		}
+		else if (attackerWeaponType == "axe" && defenderWeaponType == "lance"){
+			var advantage = Math.floor(attacker.atk * 1.2);
+			attacker.atk = advantage;
+
+			var disadvantage = Math.floor(defender.atk * 0.8);
+			defender.atk = disadvantage;
+		}
+		else if (attackerWeaponType == "sword" && defenderWeaponType == "axe"){
+			var advantage = Math.floor(attacker.atk * 1.2);
+			attacker.atk = advantage;
+
+			var disadvantage = Math.floor(defender.atk * 0.8);
+			defender.atk = disadvantage;
+		}
+
 	}
 }
 
@@ -422,7 +476,7 @@ function calculate(){
 	var combatQuestions = new combatDecisions();
 	var attackerName = attacker.name.fontcolor("turquoise");
 	var defenderName = defender.name.fontcolor("red");
-	console.log(defender.name);
+	//console.log(defender.name);
 	//Checking if attacker or defender will double
 	var attackerSpdGreater = 0;
 	var defenderSpdGreater = 0;
@@ -432,7 +486,10 @@ function calculate(){
 	else if (defender.spd - attacker.spd >= 5){
 		defenderSpdGreater = 1;
 	}
+	var attackerAtk = attacker.atk;
+	var defenderAtk = defender.atk;
 
+	combatQuestions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
 	//Initiating Combat
 	var battleText = "<br>";
 	battleText += attackerName + " initiates combat. ";
@@ -525,6 +582,9 @@ function calculate(){
 	
 	var element = document.getElementById("one_on_one");
 	element.innerHTML = battleText;
+
+	attacker.atk = attackerAtk;
+	defender.atk = defenderAtk;
 	
 	
 }
