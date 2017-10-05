@@ -487,6 +487,7 @@ function combatScenarios(){
 		}
 
 	}
+<<<<<<< HEAD
 
 	this.aPassive = function(aORd){
 		if (aORd == 0){
@@ -515,6 +516,8 @@ function combatScenarios(){
 			}
 		}
 	}
+=======
+>>>>>>> origin/master
 }
 
 function calculate(){
@@ -535,7 +538,11 @@ function calculate(){
 	var attackerAtk = attacker.atk;
 	var defenderAtk = defender.atk;
 
+<<<<<<< HEAD
 	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
+=======
+	combatQuestions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
+>>>>>>> origin/master
 	//Initiating Combat
 	var battleText = "<br>";
 	battleText += attackerName + " initiates combat. ";
