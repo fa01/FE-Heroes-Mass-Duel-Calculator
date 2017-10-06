@@ -20,39 +20,50 @@ data.skills.sort(function(a,b){
 
 attacker = {};
 attacker.name = "";
+attacker.id = 0;
 attacker.rarity = 0;
 attacker.weapontype = "";
 attacker.color = "";
+
 attacker.hp = 0;
 attacker.atk = 0;
 attacker.spd = 0;
 attacker.def = 0;
 attacker.res = 0;
+
 attacker.weaponName = "";
+attacker.weaponID = 0;
 attacker.weaponHp = 0;
 attacker.weaponAtk = 0;
 attacker.weaponSpd = 0;
 attacker.weaponDef = 0;
 attacker.weaponRes = 0;
-attacker.weaponID = 0;
+
+
 attacker.hpLeft = 0;
+
 attacker.apassive = "";
 attacker.bpassive = "";
 attacker.cpassive = "";
 attacker.special = "";
-attacker.assisst = "";
+attacker.assist = "";
+
+attacker.possibleSkills = new Object();
 
 
 defender = {};
 defender.name = "";
+defender.id = 0;
 defender.rarity = 0;
 attacker.color = "";
 attacker.weapontype = "";
+
 defender.hp = 0;
 defender.atk = 0;
 defender.spd = 0;
 defender.def = 0;
 defender.res = 0;
+
 defender.weaponName = "";
 defender.weaponAtk = 0;
 defender.weaponAtk = 0;
@@ -60,12 +71,16 @@ defender.weaponSpd = 0;
 defender.weaponDef = 0;
 defender.weaponRes = 0;
 defender.weaponID = 0;
+
 defender.hpLeft = 0;
+
 defender.apassive = "";
 defender.bpassive = "";
 defender.cpassive = "";
 defender.special = "";
 defender.assist = "";
+
+defender.possibleSkills = new Object();
 
 for (i = 0; i < data.heroes.length; i++){
 	var option = document.createElement("option");
@@ -79,6 +94,7 @@ function initAttacker(){
 
 	var select = document.getElementById("attacker_name");
     var attackerID = select.options[select.selectedIndex].value;
+    attacker.id = select.options[select.selectedIndex].value;
     attacker.name = select.options[select.selectedIndex].text;
     var attackerRarity = document.getElementById("attacker_rarity").value;
     attacker.rarity = attackerRarity;
@@ -167,6 +183,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var passiveAPicture = document.getElementById("attacker_a_picture");
 		var passiveBPicture = document.getElementById("attacker_b_picture");
 		var passiveCPicture = document.getElementById("attacker_c_picture");
+		var heroID = attacker.id;
 	}
 	else{
 		var weaponSelect = document.getElementById("defender_weapon");
@@ -178,6 +195,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var passiveAPicture = document.getElementById("defender_a_picture");
 		var passiveBPicture = document.getElementById("defender_b_picture");
 		var passiveCPicture = document.getElementById("defender_c_picture");
+		var heroID = defender.id;
 	}
 	removeOptions(weaponSelect);
 	removeOptions(passiveAoption);
@@ -198,9 +216,27 @@ function getHeroAssets(id_num, attackerOrDefender){
 		}
 	}
 
+
+	//getting all possible skills for hero
+	for (i = 0; i < data.skills.length; i++){
+		if (data.skills[i].inheritrule == attacker.weapontype){
+			var weaponOption = document.createElement("option");
+			weaponOption.text = data.skills[i].name;
+			weaponOption.value = data.skills[i].skill_id;
+			weaponSelect.appendChild(weaponOption);
+		}
+	}
+
+	for (i = 0; i < data.heroSkills.length; i++){
+		if (data.heroSkills[i].hero_id == heroID){
+			
+		}
+	}
+
 	for (i = 0; i < data.skills.length; i++){
 		for (j = 0; j < skillIDArray.length; j++){
 			if (data.skills[i].skill_id == skillIDArray[j]){
+				/*
 				if (data.skills[i].slot == "weapon"){
 					var weaponOption = document.createElement("option");
 					weaponOption.text = data.skills[i].name;
@@ -208,6 +244,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 					weaponSelect.appendChild(weaponOption);
 					//console.log(weaponOption);
 				}
+				*/
 				if (data.skills[i].slot == "a"){
 					var passiveA = document.createElement("option");
 					passiveA.text = data.skills[i].name;
@@ -276,8 +313,8 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var getLastAPassive = document.getElementById("attacker_a");
 		getLastAPassive.selectedIndex = getLastAPassive.length-1;
 		
-		attacker.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
-		combatDecisions.aPassive(0);
+		//attacker.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
+		//combatDecisions.aPassive(0);
 
 		var getLastBPassive = document.getElementById("attacker_b");
 		getLastBPassive.selectedIndex = getLastBPassive.length-1;
@@ -487,7 +524,6 @@ function combatScenarios(){
 		}
 
 	}
-<<<<<<< HEAD
 
 	this.aPassive = function(aORd){
 		if (aORd == 0){
@@ -516,8 +552,6 @@ function combatScenarios(){
 			}
 		}
 	}
-=======
->>>>>>> origin/master
 }
 
 function calculate(){
@@ -529,6 +563,8 @@ function calculate(){
 	//Checking if attacker or defender will double
 	var attackerSpdGreater = 0;
 	var defenderSpdGreater = 0;
+	console.log(attacker.spd);
+	console.log(defender.spd);
 	if (attacker.spd - defender.spd >= 5){
 		attackerSpdGreater = 1;
 	}
@@ -538,16 +574,18 @@ function calculate(){
 	var attackerAtk = attacker.atk;
 	var defenderAtk = defender.atk;
 
-<<<<<<< HEAD
+
 	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
-=======
-	combatQuestions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
->>>>>>> origin/master
+	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
+
 	//Initiating Combat
 	var battleText = "<br>";
 	battleText += attackerName + " initiates combat. ";
 
 	var damageDealt = attacker.atk - defender.def;
+	if (damageDealt < 0){
+		damageDealt = 0;
+	}
 	battleText += damageDealt + " damage dealt. ";
 	defender.hpLeft = defender.hp - damageDealt;
 
@@ -573,6 +611,9 @@ function calculate(){
 
 	if (defender.hpLeft != 0){
 		damageDealt = defender.atk - attacker.def;
+		if (damageDealt < 0){
+			damageDealt = 0;
+		}
 		attacker.hpLeft = attacker.hp - damageDealt;
 		battleText += "<br>" + defenderName + " counterattacks. ";
 		battleText += damageDealt + " damage dealt.";
