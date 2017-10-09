@@ -23,6 +23,7 @@ attacker.name = "";
 attacker.id = 0;
 attacker.rarity = 0;
 attacker.weapontype = "";
+attacker.movetype = "";
 attacker.color = "";
 
 attacker.hp = 0;
@@ -55,8 +56,9 @@ defender = {};
 defender.name = "";
 defender.id = 0;
 defender.rarity = 0;
-attacker.color = "";
-attacker.weapontype = "";
+defender.color = "";
+defender.weapontype = "";
+defender.movetype = "";
 
 defender.hp = 0;
 defender.atk = 0;
@@ -110,6 +112,7 @@ function initAttacker(){
 			attacker.def = data.heroes[i].basedef +  data.growths[attackerRarity - 1][data.heroes[i].defgrowth];
 			attacker.res = data.heroes[i].baseres +  data.growths[attackerRarity - 1][data.heroes[i].resgrowth];
 			attacker.weapontype = data.heroes[i].weapontype;
+			attacker.movetype = data.heroes[i].movetype;
 			attacker.color = data.heroes[i].color;
 			getAttackerIcon(i);
 		}
@@ -122,14 +125,11 @@ function initAttacker(){
 initAttacker();
 
 for (i = 0; i < data.heroes.length; i++){
-	//console.log(data.heroes[i].name);
-	//console.log(i);
 	var newDefender = document.createElement("option");
 	newDefender.text = data.heroes[i].name;
 	newDefender.value = data.heroes[i].hero_id;
 	var addDefender = document.getElementById("defender_name");
 	addDefender.appendChild(newDefender);
-	//console.log(select2);
 }
 
 function initDefender(){
@@ -149,6 +149,7 @@ function initDefender(){
 			defender.def = data.heroes[i].basedef +  data.growths[defender.rarity - 1][data.heroes[i].defgrowth];
 			defender.res = data.heroes[i].baseres +  data.growths[defender.rarity - 1][data.heroes[i].resgrowth];
 			defender.weapontype = data.heroes[i].weapontype;
+			defender.movetype = data.heroes[i].movetype;
 			defender.color = data.heroes[i].color;
 			getDefenderIcon(i);
 		}
@@ -179,11 +180,14 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var passiveBoption = document.getElementById("attacker_b");
 		var passiveCoption = document.getElementById("attacker_c");
 		var specialSelect = document.getElementById("attacker_special");
-		var assistOption = document.getElementById("attacker_assist");
+		var assistSelect = document.getElementById("attacker_assist");
 		var passiveAPicture = document.getElementById("attacker_a_picture");
 		var passiveBPicture = document.getElementById("attacker_b_picture");
 		var passiveCPicture = document.getElementById("attacker_c_picture");
 		var heroID = attacker.id;
+		var heroColor = attacker.color;
+		var heroMoveType = attacker.movetype;
+		var heroWeaponType = attacker.weapontype;
 	}
 	else{
 		var weaponSelect = document.getElementById("defender_weapon");
@@ -191,19 +195,21 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var passiveBoption = document.getElementById("defender_b");
 		var passiveCoption = document.getElementById("defender_c");
 		var specialSelect = document.getElementById("defender_special");
-		var assistOption = document.getElementById("defender_assist");
+		var assistSelect = document.getElementById("defender_assist");
 		var passiveAPicture = document.getElementById("defender_a_picture");
 		var passiveBPicture = document.getElementById("defender_b_picture");
 		var passiveCPicture = document.getElementById("defender_c_picture");
 		var heroID = defender.id;
+		var heroColor = defender.color;
+		var heroMoveType = defender.movetype;
+		var heroWeaponType = defender.weapontype;
 	}
 	removeOptions(weaponSelect);
 	removeOptions(passiveAoption);
 	removeOptions(passiveBoption);
 	removeOptions(passiveCoption);
 	removeOptions(specialSelect);
-	removeOptions(assistOption);
-	//console.log(passiveAPicture);
+	removeOptions(assistSelect);
 	passiveAPicture.src = "skills/noskill.png";
 	passiveBPicture.src = "skills/noskill.png";
 	passiveCPicture.src = "skills/noskill.png";
@@ -216,81 +222,140 @@ function getHeroAssets(id_num, attackerOrDefender){
 		}
 	}
 
+	var prevMaxForWeapon = 0;
+	var prevMaxForPassiveA = 0;
+	var prevMaxForPassiveB = 0;
+	var prevMaxForPassiveC = 0;
+	var prevMaxForSpecial = 0;
+	var prevMaxForAssist = 0;
 
 	//getting all possible skills for hero
 	for (i = 0; i < data.skills.length; i++){
-		if (data.skills[i].inheritrule == attacker.weapontype){
-			var weaponOption = document.createElement("option");
-			weaponOption.text = data.skills[i].name;
-			weaponOption.value = data.skills[i].skill_id;
-			weaponSelect.appendChild(weaponOption);
+		if (data.skills[i].slot == "weapon"){
+			if (data.skills[i].inheritrule == heroWeaponType){
+				var weaponOption = document.createElement("option");
+				weaponOption.text = data.skills[i].name;
+				weaponOption.value = data.skills[i].skill_id;
+				weaponSelect.appendChild(weaponOption);
+
+				for (j =0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == weaponOption.value){
+						if (prevMaxForWeapon < weaponOption.value){
+							weaponSelect.selectedIndex = weaponSelect.length-1;
+							prevMaxForWeapon = weaponOption.value;
+
+						}
+					}
+				}
+			}
 		}
-	}
 
-	for (i = 0; i < data.heroSkills.length; i++){
-		if (data.heroSkills[i].hero_id == heroID){
-			
+		if (data.skills[i].slot == "a"){
+			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff"){
+				var passiveA = document.createElement("option");
+				passiveA.text = data.skills[i].name;
+				passiveA.value = data.skills[i].skill_id;
+				passiveAoption.appendChild(passiveA);
+
+
+
+				for (j = 0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == passiveA.value){
+						if (prevMaxForPassiveA < passiveA.value){
+
+							passiveAoption.selectedIndex = passiveAoption.length - 1;
+							prevMaxForPassiveA = passiveA.value;
+
+							var skillName = passiveA.text;
+							var skillNamePath = skillName.split(" ").join("_");
+							//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+							updateAPicture(id_num, attackerOrDefender, skillNamePath);
+						}
+					}
+				}
+			}
 		}
-	}
 
-	for (i = 0; i < data.skills.length; i++){
-		for (j = 0; j < skillIDArray.length; j++){
-			if (data.skills[i].skill_id == skillIDArray[j]){
-				/*
-				if (data.skills[i].slot == "weapon"){
-					var weaponOption = document.createElement("option");
-					weaponOption.text = data.skills[i].name;
-					weaponOption.value = skillIDArray[j];
-					weaponSelect.appendChild(weaponOption);
-					//console.log(weaponOption);
-				}
-				*/
-				if (data.skills[i].slot == "a"){
-					var passiveA = document.createElement("option");
-					passiveA.text = data.skills[i].name;
-					//console.log(passiveA.text);
-					passiveA.value = skillIDArray[j];
-					passiveAoption.appendChild(passiveA);
-					var skillName = data.skills[i].name;
-					var skillNamePath = skillName.split(" ").join("_");
-					//passiveAPicture.src = "skills/" + skillNamePath + ".png";
-					updateAPicture(id_num, attackerOrDefender, skillNamePath);
-				}
 
-				if (data.skills[i].slot == "b"){
-					var passiveB = document.createElement("option");
-					passiveB.text = data.skills[i].name;
-					passiveB.value = skillIDArray[i];
-					passiveBoption.appendChild(passiveB);
-					var skillName = data.skills[i].name;
-					var skillNamePath = skillName.split(" ").join("_");
-					//passiveBPicture.src = "skills/" + skillNamePath + ".png";
-					//console.log(attackerOrDefender);
-					updateBPicture(id_num, attackerOrDefender, skillNamePath);
-				}
+		if (data.skills[i].slot == "b"){
+			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff" || (data.skills[i].inheritrule == "nongreen" && (heroColor == "blue" || heroColor == "red")) || (data.skills[i].inheritrule == "nonblue" && (heroColor == "green" || heroColor == "red")) || (data.skills[i].inheritrule == "nonred" && (heroColor == "green" || heroColor == "blue"))){
+				var passiveB = document.createElement("option");
+				passiveB.text = data.skills[i].name;
+				passiveB.value = data.skills[i].skill_id;
+				passiveBoption.appendChild(passiveB);
 
-				if (data.skills[i].slot == "c"){
-					var passiveC = document.createElement("option");
-					passiveC.text = data.skills[i].name;
-					passiveC.value = skillIDArray[i];
-					passiveCoption.appendChild(passiveC);
-					var skillName = data.skills[i].name;
-					var skillNamePath = skillName.split(" ").join("_");
-					//passiveCPicture.src = "skills/" + skillNamePath + ".png";
-					updateCPicture(id_num, attackerOrDefender, skillNamePath);
-				}
+				for (j = 0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == passiveB.value){
+						if (prevMaxForPassiveB < passiveB.value){
+							
+							passiveBoption.selectedIndex = passiveBoption.length - 1;
+							prevMaxForPassiveB = passiveB.value;
 
-				if (data.skills[i].slot == "special"){
-					var specialOption = document.createElement("option");
-					specialOption.text = data.skills[i].name;
-					specialOption.value = skillIDArray[i];
-					specialSelect.appendChild(specialOption);
+							var skillName = passiveB.text;
+							var skillNamePath = skillName.split(" ").join("_");
+							//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+							updateBPicture(id_num, attackerOrDefender, skillNamePath);
+						}
+					}
 				}
-				if (data.skills[i].slot == "assist"){
-					var assistSkill = document.createElement("option");
-					assistSkill.text = data.skills[i].name;
-					assistSkill.value = skillIDArray[i];
-					assistOption.appendChild(assistSkill);
+			}
+		}
+
+		if (data.skills[i].slot == "c"){
+			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff" || data.skills[i].inheritrule == heroMoveType){
+				var passiveC = document.createElement("option");
+				passiveC.text = data.skills[i].name;
+				passiveC.value = data.skills[i].skill_id;
+				passiveCoption.appendChild(passiveC);
+
+				for (j = 0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == passiveC.value){
+						if (prevMaxForPassiveC < passiveC.value){
+
+							passiveCoption.selectedIndex = passiveCoption.length - 1;
+							prevMaxForPassiveC = passiveC.value;
+
+							var skillName = passiveC.text;
+							var skillNamePath = skillName.split(" ").join("_");
+							//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+							updateCPicture(id_num, attackerOrDefender, skillNamePath);
+						}
+					}
+				}
+			}
+		}
+
+		if (data.skills[i].slot == "special"){
+			var specialOption = document.createElement("option");
+			specialOption.text = data.skills[i].name;
+			specialOption.value = data.skills[i].skill_id;
+			specialSelect.appendChild(specialOption);
+
+			for (j =0; j < skillIDArray.length; j++){
+				if (skillIDArray[j] == specialOption.value){
+					if (prevMaxForSpecial < specialOption.value){
+						specialSelect.selectedIndex = specialSelect.length-1;
+						prevMaxForSpecial = specialOption.value;
+
+					}
+				}
+			}
+		}
+
+		if (data.skills[i].slot == "assist"){
+			if (data.skills[i].inheritrule == "nonstaff" && heroWeaponType != "staff"){
+				var assistOption = document.createElement("option");
+				assistOption.text = data.skills[i].name;
+				assistOption.value = data.skills[i].skill_id;
+				assistSelect.appendChild(assistOption);
+
+				for (j =0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == assistOption.value){
+						if (prevMaxForAssist < assistOption.value){
+							assistSelect.selectedIndex = assistSelect.length-1;
+							prevMaxForAssist = assistOption.value;
+						}
+					}
 				}
 			}
 		}
@@ -299,59 +364,37 @@ function getHeroAssets(id_num, attackerOrDefender){
 	var combatDecisions = new combatScenarios();
 	//  ------------------ CHANGE ATTACKER ASSETS TO LAST ONE IN LIST ----------------------
 	if (attackerOrDefender == 0){
-		var getLastWeapon = document.getElementById("attacker_weapon");
 
-		sortSelect(getLastWeapon);
-		getLastWeapon.selectedIndex = getLastWeapon.length-1;
-		var weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
+		var weaponValue = weaponSelect[weaponSelect.selectedIndex];
 		attacker.weaponID = weaponValue.value;
 		attacker.weaponName = weaponValue.text;
-		//console.log(attacker.weaponName);
-		//console.log(attacker.weaponID);
-
 
 		var getLastAPassive = document.getElementById("attacker_a");
-		getLastAPassive.selectedIndex = getLastAPassive.length-1;
-		
-		//attacker.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
-		//combatDecisions.aPassive(0);
+		attacker.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
+		combatDecisions.aPassive(0);
 
 		var getLastBPassive = document.getElementById("attacker_b");
-		getLastBPassive.selectedIndex = getLastBPassive.length-1;
 
 		var getLastCPassive = document.getElementById("attacker_c");
-		getLastCPassive.selectedIndex = getLastCPassive.length-1;
 
 		var getLastSpecial = document.getElementById("attacker_special");
-		getLastSpecial.selectedIndex = getLastSpecial.length-1;
 	}
 
 	//  ------------------ CHANGE DEFENDER ASSETS TO LAST ONE IN LIST ----------------------
 	else{
-		//getLastWeapon = document.getElementById("defender_weapon");
-		//getLastWeapon.selectedIndex = getLastWeapon.length-1;
-		var getLastWeapon = document.getElementById("defender_weapon");
-		sortSelect(getLastWeapon);
-		getLastWeapon.selectedIndex = getLastWeapon.length-1;
-		weaponValue = getLastWeapon[getLastWeapon.selectedIndex];
+		var weaponValue = weaponSelect[weaponSelect.selectedIndex];
 		defender.weaponID = weaponValue.value;
 		defender.weaponName = weaponValue.text;
-		//console.log(defender.weaponID);
 
 		getLastAPassive = document.getElementById("defender_a");
-		getLastAPassive.selectedIndex = getLastAPassive.length-1;
-
 		defender.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
 		combatDecisions.aPassive(1);
 
 		getLastBPassive = document.getElementById("defender_b");
-		getLastBPassive.selectedIndex = getLastBPassive.length-1;
 
 		getLastCPassive = document.getElementById("defender_c");
-		getLastCPassive.selectedIndex = getLastCPassive.length-1;
 
 		getLastSpecial = document.getElementById("defender_special");
-		getLastSpecial.selectedIndex = getLastSpecial.length-1;
 	}
 }
 
@@ -529,10 +572,7 @@ function combatScenarios(){
 		if (aORd == 0){
 			for (i = 0; i < data.skills.length; i++){
 				if (attacker.apassive == data.skills[i].skill_id){
-					console.log(attacker.hp);
 					attacker.hp += data.skills[i].hp;
-					console.log(data.skills[i].hp);
-					console.log(attacker.hp);
 					attacker.atk += data.skills[i].atk;
 					attacker.spd += data.skills[i].spd;
 					attacker.def += data.skills[i].def;
