@@ -31,7 +31,7 @@ h1{
 }
 
 .stat_row{
-	padding: 10px 10px 10px 10px;
+	padding: 0px 10px 10px 10px;
 	display: inline;
 	width: 600px;
 	margin: 0 auto;
@@ -44,7 +44,7 @@ h1{
 	padding: 18px 10px 10px 10px;
 	width:220px;
 	height:132px;
-	line-height:23px;
+	line-height:18px;
 	display: inline;
 	margin: auto;
 }
@@ -55,6 +55,52 @@ h1{
     -webkit-justify-content: space-around; /* Safari 6.1+ */
     display: flex;
     justify-content: space-around;
+}
+
+.skill_picture{
+	width:  40px;
+	height: 40px;
+	padding-right: 20px;
+}
+
+.skill_select{
+	width: 150px;
+	padding-right: 10px;
+}
+
+.weapon_label{
+	padding-right: 28px;
+}
+
+.special_label{
+	padding-right: 33px;
+}
+
+.skill_letter_red{
+	padding-right: 18px;
+}
+
+.skill_letter_blue{
+	padding-right: 18px;
+}
+
+.skill_letter_green{
+	padding-right: 18px;
+}
+
+.skill_letter_assist{
+	padding-right: 40px;
+}
+
+select {
+	width: 125px;
+    border: 1px solid #000;
+    padding: 0px 10px 0px 0px;
+    margin: 0;
+    height: 22px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 
@@ -71,6 +117,16 @@ h1{
 	padding-right: -50px;
 }
 
+
+/*
+
+.attacker_skill_letter_red{
+   position: absolute; 
+   top: 535px; 
+   left: 230px; 
+   width: 100%; 
+}
+*/
 
 
 /* --------------------------------------- DEFENDER --------------------------------------------*/
@@ -93,7 +149,7 @@ h1{
 	float: center;
 	text-align: center;
 	border: 3px solid #73AD21;
-	width: 350px;
+	width: 275px;
 	margin: auto;
     display: -webkit-flex; /* Safari */
     -webkit-justify-content: space-around; /* Safari 6.1+ */

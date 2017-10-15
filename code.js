@@ -12,6 +12,7 @@ data.heroes.sort(function(a,b){
 	return (a.name.toLowerCase() > b.name.toLowerCase())*2-1;
 })
 
+
 //Sort skills array by name
 data.skills.sort(function(a,b){
 	//console.log(a.name + ", " + b.name + ": " + a.name>b.name);
@@ -216,9 +217,11 @@ function getHeroAssets(id_num, attackerOrDefender){
 
 	var possibleAttributes = new Object();
 	var skillIDArray = new Array();
+	var amountofSkills = 0;
 	for (i = 0; i < data.heroSkills.length; i++){
 		if (data.heroSkills[i].hero_id == id_num){
-			skillIDArray[i] = data.heroSkills[i].skill_id;
+			skillIDArray[amountofSkills] = data.heroSkills[i].skill_id;
+			amountofSkills++;
 		}
 	}
 
@@ -228,6 +231,42 @@ function getHeroAssets(id_num, attackerOrDefender){
 	var prevMaxForPassiveC = 0;
 	var prevMaxForSpecial = 0;
 	var prevMaxForAssist = 0;
+
+	var noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	weaponSelect.appendChild(noneOption);
+
+	noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	passiveAoption.appendChild(noneOption);
+
+	noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	passiveBoption.appendChild(noneOption);
+
+	noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	passiveCoption.appendChild(noneOption);
+
+	noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	specialSelect.appendChild(noneOption);
+
+	noneOption = document.createElement("option");
+	noneOption.text = "None";
+	noneOption.value = "none";
+	assistSelect.appendChild(noneOption);
+
+	passiveAoption.selectedIndex = -1;
+	passiveBoption.selectedIndex = -1;
+	passiveCoption.selectedIndex = -1;
+	specialSelect.selectedIndex  = -1;
+	assistSelect.selectedIndex   = -1;
 
 	//getting all possible skills for hero
 	for (i = 0; i < data.skills.length; i++){
@@ -240,18 +279,30 @@ function getHeroAssets(id_num, attackerOrDefender){
 
 				for (j =0; j < skillIDArray.length; j++){
 					if (skillIDArray[j] == weaponOption.value){
-						if (prevMaxForWeapon < weaponOption.value){
+						if (prevMaxForWeapon < parseInt(weaponOption.value)){
 							weaponSelect.selectedIndex = weaponSelect.length-1;
 							prevMaxForWeapon = weaponOption.value;
-
 						}
+					}
+				}
+			}
+			if (data.skills[i].inheritrule == "unique"){
+				for (j =0; j < skillIDArray.length; j++){
+					if (skillIDArray[j] == data.skills[i].skill_id){
+						var weaponOption = document.createElement("option");
+						weaponOption.text = data.skills[i].name;
+						weaponOption.value = data.skills[i].skill_id;
+						weaponSelect.appendChild(weaponOption);
+						weaponSelect.selectedIndex = weaponSelect.length-1;
+						prevMaxForWeapon = weaponOption.value;
+						
 					}
 				}
 			}
 		}
 
 		if (data.skills[i].slot == "a"){
-			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff"){
+			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff" || data.skills[i].inheritrule == heroMoveType){
 				var passiveA = document.createElement("option");
 				passiveA.text = data.skills[i].name;
 				passiveA.value = data.skills[i].skill_id;
@@ -260,8 +311,8 @@ function getHeroAssets(id_num, attackerOrDefender){
 
 
 				for (j = 0; j < skillIDArray.length; j++){
-					if (skillIDArray[j] == passiveA.value){
-						if (prevMaxForPassiveA < passiveA.value){
+					if (skillIDArray[j] == parseInt(passiveA.value)){
+						if (prevMaxForPassiveA < parseInt(passiveA.value)){
 
 							passiveAoption.selectedIndex = passiveAoption.length - 1;
 							prevMaxForPassiveA = passiveA.value;
@@ -278,15 +329,15 @@ function getHeroAssets(id_num, attackerOrDefender){
 
 
 		if (data.skills[i].slot == "b"){
-			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff" || (data.skills[i].inheritrule == "nongreen" && (heroColor == "blue" || heroColor == "red")) || (data.skills[i].inheritrule == "nonblue" && (heroColor == "green" || heroColor == "red")) || (data.skills[i].inheritrule == "nonred" && (heroColor == "green" || heroColor == "blue"))){
+			if (data.skills[i].inheritrule == "" || data.skills[i].inheritrule == "nonstaff" || data.skills[i].inheritrule == heroMoveType || (data.skills[i].inheritrule == "nongreen" && (heroColor == "blue" || heroColor == "red")) || (data.skills[i].inheritrule == "nonblue" && (heroColor == "green" || heroColor == "red")) || (data.skills[i].inheritrule == "nonred" && (heroColor == "green" || heroColor == "blue"))){
 				var passiveB = document.createElement("option");
 				passiveB.text = data.skills[i].name;
 				passiveB.value = data.skills[i].skill_id;
 				passiveBoption.appendChild(passiveB);
 
 				for (j = 0; j < skillIDArray.length; j++){
-					if (skillIDArray[j] == passiveB.value){
-						if (prevMaxForPassiveB < passiveB.value){
+					if (skillIDArray[j] == parseInt(passiveB.value)){
+						if (prevMaxForPassiveB < parseInt(passiveB.value)){
 							
 							passiveBoption.selectedIndex = passiveBoption.length - 1;
 							prevMaxForPassiveB = passiveB.value;
@@ -309,8 +360,8 @@ function getHeroAssets(id_num, attackerOrDefender){
 				passiveCoption.appendChild(passiveC);
 
 				for (j = 0; j < skillIDArray.length; j++){
-					if (skillIDArray[j] == passiveC.value){
-						if (prevMaxForPassiveC < passiveC.value){
+					if (skillIDArray[j] == parseInt(passiveC.value)){
+						if (prevMaxForPassiveC < parseInt(passiveC.value)){
 
 							passiveCoption.selectedIndex = passiveCoption.length - 1;
 							prevMaxForPassiveC = passiveC.value;
@@ -332,7 +383,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 			specialSelect.appendChild(specialOption);
 
 			for (j =0; j < skillIDArray.length; j++){
-				if (skillIDArray[j] == specialOption.value){
+				if (skillIDArray[j] == parseInt(specialOption.value)){
 					if (prevMaxForSpecial < specialOption.value){
 						specialSelect.selectedIndex = specialSelect.length-1;
 						prevMaxForSpecial = specialOption.value;
@@ -350,7 +401,7 @@ function getHeroAssets(id_num, attackerOrDefender){
 				assistSelect.appendChild(assistOption);
 
 				for (j =0; j < skillIDArray.length; j++){
-					if (skillIDArray[j] == assistOption.value){
+					if (skillIDArray[j] == parseInt(assistOption.value)){
 						if (prevMaxForAssist < assistOption.value){
 							assistSelect.selectedIndex = assistSelect.length-1;
 							prevMaxForAssist = assistOption.value;
