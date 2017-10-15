@@ -19,9 +19,12 @@ data.skills.sort(function(a,b){
 	return (a.name.toLowerCase() + a.slot > b.name.toLowerCase() + b.slot)*2-1;
 })
 
+
+//-------------------------------------------------- ATTACKER --------------------------------------------------//
 attacker = {};
 attacker.name = "";
 attacker.id = 0;
+attacker.positionInHeroDB = 0;
 attacker.rarity = 0;
 attacker.weapontype = "";
 attacker.movetype = "";
@@ -45,17 +48,31 @@ attacker.weaponRes = 0;
 attacker.hpLeft = 0;
 
 attacker.apassive = "";
+attacker.apassiveBool = 0;
+attacker.apassiveIndex = 0;
+
 attacker.bpassive = "";
+attacker.bpassiveText = "";
+attacker.bpassiveIndex = 0;
+
 attacker.cpassive = "";
+attacker.cpassiveIndex = 0;
+
 attacker.special = "";
+attacker.specialIndex = 0;
+
 attacker.assist = "";
+attacker.assistIndex = 0;
+
+attacker.hasBreaker = false;
 
 attacker.possibleSkills = new Object();
 
-
+//-------------------------------------------------- DEFENDER --------------------------------------------------//
 defender = {};
 defender.name = "";
 defender.id = 0;
+defender.positionInHeroDB = 0;
 defender.rarity = 0;
 defender.color = "";
 defender.weapontype = "";
@@ -78,12 +95,30 @@ defender.weaponID = 0;
 defender.hpLeft = 0;
 
 defender.apassive = "";
+defender.apassiveIndex = 0;
+defender.apassiveBool = 0;
+
 defender.bpassive = "";
+defender.bpassiveText = "";
+defender.bpassiveIndex = 0;
+
 defender.cpassive = "";
+defender.cpassiveIndex = 0;
+
 defender.special = "";
+defender.specialIndex = 0;
+
 defender.assist = "";
+defender.assistIndex = 0;
+
+defender.hasBreaker = false;
 
 defender.possibleSkills = new Object();
+
+
+
+
+var combatDecisions = new combatScenarios();
 
 for (i = 0; i < data.heroes.length; i++){
 	var option = document.createElement("option");
@@ -115,6 +150,7 @@ function initAttacker(){
 			attacker.weapontype = data.heroes[i].weapontype;
 			attacker.movetype = data.heroes[i].movetype;
 			attacker.color = data.heroes[i].color;
+			attacker.positionInHeroDB = i;
 			getAttackerIcon(i);
 		}
 	}
@@ -152,6 +188,7 @@ function initDefender(){
 			defender.weapontype = data.heroes[i].weapontype;
 			defender.movetype = data.heroes[i].movetype;
 			defender.color = data.heroes[i].color;
+			defender.positionInHeroDB = i;
 			getDefenderIcon(i);
 		}
 	}
@@ -423,10 +460,14 @@ function getHeroAssets(id_num, attackerOrDefender){
 		var getLastAPassive = document.getElementById("attacker_a");
 		attacker.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
 		combatDecisions.aPassive(0);
+		attacker.apassiveBool = 1;
 
 		var getLastBPassive = document.getElementById("attacker_b");
+		attacker.bpassive = getLastBPassive[getLastBPassive.selectedIndex].value;
+		attacker.bpassiveText = getLastBPassive[getLastBPassive.selectedIndex].text;
 
 		var getLastCPassive = document.getElementById("attacker_c");
+		attacker.cpassive = getLastCPassive[getLastCPassive.selectedIndex].value;
 
 		var getLastSpecial = document.getElementById("attacker_special");
 	}
@@ -440,8 +481,11 @@ function getHeroAssets(id_num, attackerOrDefender){
 		getLastAPassive = document.getElementById("defender_a");
 		defender.apassive = getLastAPassive[getLastAPassive.selectedIndex].value;
 		combatDecisions.aPassive(1);
+		defender.apassiveBool = 1;
 
 		getLastBPassive = document.getElementById("defender_b");
+		defender.bpassive = getLastBPassive[getLastBPassive.selectedIndex].value;
+		defender.bpassiveText = getLastBPassive[getLastBPassive.selectedIndex].text;
 
 		getLastCPassive = document.getElementById("defender_c");
 
@@ -571,6 +615,15 @@ function combatScenarios(){
 		}
 	}
 
+	this.hasBreakerSkill = function(bpassive){
+		if (bpassive.indexOf("breaker") >= 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	this.hasWeaponAdvantage = function(attackerWeaponType, defenderWeaponType){
 		if (attackerWeaponType == "sword" && defenderWeaponType == "lance"){
 			console.log("attacker's weapon = "+ attackerWeaponType);
@@ -620,9 +673,23 @@ function combatScenarios(){
 	}
 
 	this.aPassive = function(aORd){
+
 		if (aORd == 0){
+			if (attacker.apassiveBool == 1){
+				
+				//console.log("previous aPassive skill is: ");
+				//console.log(data.skills[attacker.apassiveIndex]);
+				//console.log("in delete aPassive : Attack before is "+ attacker.atk);
+				attacker.hp -= data.skills[attacker.apassiveIndex].hp;
+				attacker.atk -= data.skills[attacker.apassiveIndex].atk;
+				//console.log("in delete aPassive : Attack after is "+ attacker.atk);
+				attacker.spd -= data.skills[attacker.apassiveIndex].spd;
+				attacker.def -= data.skills[attacker.apassiveIndex].def;
+				attacker.res -= data.skills[attacker.apassiveIndex].res;
+			}
 			for (i = 0; i < data.skills.length; i++){
 				if (attacker.apassive == data.skills[i].skill_id){
+					attacker.apassiveIndex = i;
 					attacker.hp += data.skills[i].hp;
 					attacker.atk += data.skills[i].atk;
 					attacker.spd += data.skills[i].spd;
@@ -630,10 +697,20 @@ function combatScenarios(){
 					attacker.res += data.skills[i].res;
 				}
 			}
+
 		}
 		else{
+			if (defender.apassiveBool == 1){
+				defender.hp -= data.skills[defender.apassiveIndex].hp;
+				defender.atk -= data.skills[defender.apassiveIndex].atk;
+				defender.spd -= data.skills[defender.apassiveIndex].spd;
+				defender.def -= data.skills[defender.apassiveIndex].def;
+				defender.res -= data.skills[defender.apassiveIndex].res;
+			}
+			
 			for (i = 0; i < data.skills.length; i++){
 				if (defender.apassive == data.skills[i].skill_id){
+					defender.apassiveIndex = i;
 					defender.hp += data.skills[i].hp;
 					defender.atk += data.skills[i].atk;
 					defender.spd += data.skills[i].spd;
@@ -643,19 +720,154 @@ function combatScenarios(){
 			}
 		}
 	}
+
+	this.bPassive = function(aORd){
+		if (aORd == 0){
+			if (this.hasBreakerSkill(attacker.bpassiveText) == true){
+				if (attacker.bpassiveText.includes("Sword") && defender.weapontype == "sword"){
+					attacker.hasBreaker = true;
+				}
+				else if (attacker.bpassiveText.includes("Axe") && defender.weapontype == "axe"){
+					attacker.hasBreaker = true;
+				}
+				else if (attacker.bpassiveText.includes("Lance") && (defender.weapontype == "lance")){
+					attacker.hasBreaker = true;
+					console.log("hey~");
+				}
+				else if (attacker.bpassiveText.includes("R Tome") && defender.weapontype == "redtome"){
+					attacker.hasBreaker = true;
+				}
+				else if (attacker.bpassiveText.includes("G Tome") && defender.weapontype == "greentome"){
+					attacker.hasBreaker = true;
+				}
+				else if (attacker.bpassiveText.includes("B Tome") && defender.weapontype == "bluetome"){
+					attacker.hasBreaker = true;
+				}
+			}
+			else{
+				attacker.hasBreaker = false;
+			}
+		}
+		else{
+			console.log(defender.bpassiveText);
+			if (this.hasBreakerSkill(defender.bpassiveText) == true){
+				if (defender.bpassiveText.includes("Sword") && attacker.weapontype == "sword"){
+					defender.hasBreaker = true;
+				}
+				else if (defender.bpassiveText.includes("Axe") && attacker.weapontype == "axe"){
+					defender.hasBreaker = true;
+				}
+				else if (defender.bpassiveText.includes("Lance") && (attacker.weapontype == "lance")){
+					defender.hasBreaker = true;
+					console.log("defender hey~");
+				}
+				else if (defender.bpassiveText.includes("R Tome") && attacker.weapontype == "redtome"){
+					defender.hasBreaker = true;
+				}
+				else if (defender.bpassiveText.includes("G Tome") && attacker.weapontype == "greentome"){
+					defender.hasBreaker = true;
+				}
+				else if (defender.bpassiveText.includes("B Tome") && attacker.weapontype == "bluetome"){
+					defender.hasBreaker = true;
+				}
+			}
+			else{
+				defender.hasBreaker = false;
+			}
+		}
+	}
 }
 
+function updateAPassive(attackerOrDefender){
+
+	if (attackerOrDefender == 0){
+		
+		var aPassive = document.getElementById("attacker_a");
+		attacker.apassive = aPassive.options[aPassive.selectedIndex].value;
+		combatDecisions.aPassive(0);
+
+		var skillName = aPassive.options[aPassive.selectedIndex].text;
+		var skillNamePath = skillName.split(" ").join("_");
+		//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+		var element = document.getElementById("attacker_hp");
+		element.innerHTML = attacker.hp;
+
+		element = document.getElementById("attacker_atk");
+		element.innerHTML = attacker.atk;
+
+		element = document.getElementById("attacker_spd");
+		element.innerHTML = attacker.spd;
+
+		element = document.getElementById("attacker_def");
+		element.innerHTML = attacker.def;
+
+		element = document.getElementById("attacker_res");
+		element.innerHTML = attacker.res;
+		updateAPicture(attacker.positionInHeroDB, attackerOrDefender, skillNamePath);
+	}
+	else{
+		
+		var aPassive = document.getElementById("defender_a");
+		defender.apassive = aPassive.options[aPassive.selectedIndex].value;
+		combatDecisions.aPassive(1);
+
+		var skillName = aPassive.options[aPassive.selectedIndex].text;
+		var skillNamePath = skillName.split(" ").join("_");
+		//passiveAPicture.src = "skills/" + skillNamePath + ".png";
+		var element = document.getElementById("defender_hp");
+		element.innerHTML = defender.hp;
+
+		element = document.getElementById("defender_atk");
+		element.innerHTML = defender.atk;
+
+		element = document.getElementById("defender_spd");
+		element.innerHTML = defender.spd;
+
+		element = document.getElementById("defender_def");
+		element.innerHTML = defender.def;
+
+		element = document.getElementById("defender_res");
+		element.innerHTML = defender.res;
+		updateAPicture(defender.positionInHeroDB, attackerOrDefender, skillNamePath);
+	}
+}
+
+function updateBPassive(attackerOrDefender){
+	if (attackerOrDefender == 0){
+		
+		var bPassive = document.getElementById("attacker_b");
+		attacker.bpassive = bPassive.options[bPassive.selectedIndex].value;
+		attacker.bpassiveText = bPassive[bPassive.selectedIndex].text;
+
+		combatDecisions.bPassive(0);
+
+		var skillName = bPassive.options[bPassive.selectedIndex].text;
+		var skillNamePath = skillName.split(" ").join("_");
+		updateBPicture(attacker.positionInHeroDB, attackerOrDefender, skillNamePath);
+	}
+	else{
+		
+		var bPassive = document.getElementById("defender_b");
+		defender.bpassive = bPassive.options[bPassive.selectedIndex].value;
+		defender.bpassiveText = bPassive[bPassive.selectedIndex].text;
+
+		combatDecisions.bPassive(1);
+
+		var skillName = bPassive.options[bPassive.selectedIndex].text;
+		var skillNamePath = skillName.split(" ").join("_");
+		updateBPicture(defender.positionInHeroDB, attackerOrDefender, skillNamePath);
+	}
+}
 function calculate(){
 	//Setup
-	var combatDecisions = new combatScenarios();
 	var attackerName = attacker.name.fontcolor("turquoise");
 	var defenderName = defender.name.fontcolor("red");
 	//console.log(defender.name);
 	//Checking if attacker or defender will double
 	var attackerSpdGreater = 0;
 	var defenderSpdGreater = 0;
-	console.log(attacker.spd);
-	console.log(defender.spd);
+	//console.log(attacker.spd);
+	//console.log(defender.spd);
 	if (attacker.spd - defender.spd >= 5){
 		attackerSpdGreater = 1;
 	}
@@ -665,9 +877,11 @@ function calculate(){
 	var attackerAtk = attacker.atk;
 	var defenderAtk = defender.atk;
 
+	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
 
-	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
-	combatDecisions.hasWeaponAdvantage(attacker.weapontype, defender.weapontype);
+	combatDecisions.bPassive(0);
+	combatDecisions.bPassive(1);
+
 
 	//Initiating Combat
 	var battleText = "<br>";
@@ -723,34 +937,83 @@ function calculate(){
 				battleText += "<br>";
 			} 
 		}
+		if (attacker.hpLeft == 0 || defender.hpLeft == 0){
 
-		if (attackerSpdGreater == 1){
-			if (defender.hpLeft != 0){
+		}
+		else{
+			console.log("attacker has breaker = " + attacker.hasBreaker);
+			console.log("defender has breaker = " + defender.hasBreaker);
+			// no breakers for either
+			var breakerDecision = 0;
+			//breaker - breaker
+			if (attacker.hasBreaker == true && defender.hasBreaker == true){
+				breakerDecision = 1;
+			}
+			//breaker - no breaker
+			else if (attacker.hasBreaker == true && defender.hasBreaker == false){
+				breakerDecision = 2;
+
 				damageDealt = attacker.atk - defender.def;
 				previousHpLeft = defender.hpLeft;
 				defender.hpLeft = defender.hpLeft - damageDealt;
 				if (defender.hpLeft < 0){
 					defender.hpLeft = 0;
 				}
-				battleText += "<br>" + attackerName + " makes a follow-up attack."
+				battleText += "<br>" + attackerName + " makes a follow-up attack due to " + attacker.bpassiveText + ".";
 				battleText += "<br>" + damageDealt + " damage dealt. ";
 				battleText += "<br>" + defenderName + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
 				battleText += "<br>";
-			}
-		}
 
-		if (defenderSpdGreater == 1){
-			if (attacker.hpLeft != 0){
-				damageDealt = defender.atk - attacker.def;
-				previousHpLeft = attacker.hpLeft;
-				attacker.hpLeft = attacker.hpLeft - damageDealt;
-				if (attacker.hpLeft < 0){
-					attacker.hpLeft = 0;
+				if (combatDecisions.hasBraveWeapon(attacker.weaponName) == true){
+					if (defender.hpLeft != 0){
+						previousHpLeft = defender.hpLeft;
+						defender.hpLeft = defender.hpLeft - damageDealt;
+						if (defender.hpLeft < 0){
+							defender.hpLeft = 0;
+						}
+						battleText += "<br><br>" + attackerName + " attacks again immediately due to " + attacker.weaponName;
+						battleText += "<br>" + damageDealt + " damage dealt. ";
+						battleText += "<br>" + defenderName + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
+						battleText += "<br>";
+					} 
 				}
-				battleText += "<br>" + defenderName + " makes a follow-up attack."
-				battleText += "<br>" + damageDealt + " damage dealt. ";
-				battleText += "<br>" + attackerName + " HP: " + previousHpLeft + " -> " + attacker.hpLeft;
-				battleText += "<br>";
+			}
+
+			// no breaker - breaker
+			else if (attacker.hasBreaker == false && defender.hasBreaker == true){
+				breakerDecision = 3;
+			}
+
+			if (breakerDecision == 0 || breakerDecision == 1){
+				if (attackerSpdGreater == 1){
+					if (defender.hpLeft != 0){
+						damageDealt = attacker.atk - defender.def;
+						previousHpLeft = defender.hpLeft;
+						defender.hpLeft = defender.hpLeft - damageDealt;
+						if (defender.hpLeft < 0){
+							defender.hpLeft = 0;
+						}
+						battleText += "<br>" + attackerName + " makes a follow-up attack."
+						battleText += "<br>" + damageDealt + " damage dealt. ";
+						battleText += "<br>" + defenderName + " HP: " + previousHpLeft + " -> " + defender.hpLeft;
+						battleText += "<br>";
+					}
+				}
+
+				if (defenderSpdGreater == 1){
+					if (attacker.hpLeft != 0){
+						damageDealt = defender.atk - attacker.def;
+						previousHpLeft = attacker.hpLeft;
+						attacker.hpLeft = attacker.hpLeft - damageDealt;
+						if (attacker.hpLeft < 0){
+							attacker.hpLeft = 0;
+						}
+						battleText += "<br>" + defenderName + " makes a follow-up attack."
+						battleText += "<br>" + damageDealt + " damage dealt. ";
+						battleText += "<br>" + attackerName + " HP: " + previousHpLeft + " -> " + attacker.hpLeft;
+						battleText += "<br>";
+					}
+				}
 			}
 		}
 	}

@@ -74,13 +74,13 @@
 				<div class = "skill_row"> 
 					<img class = "skill_picture" id = "attacker_a_picture" src = "skills/noskill.png"/> 
 					<span class = "skill_letter_red"> Passive A </span>
-					<select class = "skill_select" id = "attacker_a"> </select>
+					<select class = "skill_select" id = "attacker_a" onchange = "updateAPassive(0)"> </select>
 				</div>
 
 				<div class = "skill_row"> 
 					<img class = "skill_picture" id = "attacker_b_picture" src = "skills/noskill.png"/> 
 					<span class = "skill_letter_blue"> Passive B </span>
-					<select class = "skill_select" id = "attacker_b"> </select>
+					<select class = "skill_select" id = "attacker_b" onchange = "updateBPassive(0)"> </select>
 				</div>
 
 				<div class = "skill_row"> 
@@ -156,12 +156,12 @@
 				<div class = "skill_row">
 					<img class = "skill_picture" id = "defender_a_picture" src="skills/noskill.png"/>
 					<span class="skill_letter_red"> Passive A </span>
-					<select class = "skill_select" id = "defender_a"> </select>
+					<select class = "skill_select" id = "defender_a" onchange = "updateAPassive(1)"> </select>
 				</div>
 				<div class = "skill_row">
 					<img class = "skill_picture" id = "defender_b_picture" src = "skills/noskill.png"/>
 					<span class = "skill_letter_blue"> Passive B </span>
-					<select class = "skill_select" id = "defender_b"> </select>
+					<select class = "skill_select" id = "defender_b" onchange = "updateBPassive(1)"> </select>
 				</div>
 				<div class = "skill_row">
 					<img class = "skill_picture" id = "defender_c_picture" src="skills/noskill.png"/>
